@@ -13,10 +13,10 @@
         <th>Source</th>
         <th>Destination</th>
     </tr>
-    <tr th:each="product:${flights}">
-        <td th:text="${product.getFlightID()}"></td>
-        <td th:text="${product.getSource()}"></td>
-        <td th:text="${product.getDestination()}"></td>
+    <tr th:each="flightInfo:${flights}">
+        <td th:text="${flightInfo.getFlightID()}"></td>
+        <td th:text="${flightInfo.getSource()}"></td>
+        <td th:text="${flightInfo.getDestination()}"></td>
 
     </tr>
 </table>

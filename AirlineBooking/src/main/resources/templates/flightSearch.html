@@ -6,27 +6,37 @@
 </head>
 <body>
 <p th:text = "'Welcome to TWAirline'"/>
-<form action="#" th:action="@{/searchFlight}" th:object="${searchObj}" method="post">
-    <div class="col-lg-3">
-        <p><b>From: </b></p>
-        <select class="form-control" id="source" name="source" th:field="*{source}" >
-            <option value="">Select To City</option>
+<form action="#" th:action="@{/searchFlightByPassengers}" th:object="${searchObj}" method="post">
+    <span>
+        <b>From: </b>
+        <select class="form-control" id="source" name="source" th:field="*{source}" th:required="required" >
+            <option value="">Select From City</option>
             <option th:each="city : ${Sources}"
                 th:value="${city}"
                 th:text="${city}"></option>
         </select>
-    </div>
-    <div class="col-lg-3">
-        <p><b>To: </b></p>
-
-        <select class="form-control" id="destination" name="destination" th:field="*{destination}">
-            <option value="">Select From City</option>
+        <b> To: </b>
+        <select class="form-control" id="destination" name="destination" th:field="*{destination}" th:required="required">
+            <option value="">Select To City</option>
             <option th:each="city : ${Destinations}"
                 th:value="${city}"
                 th:text="${city}">
             </option>
         </select>
-    </div>
+
+        <p>No Of Passengers:</p>
+         <input type="number" th:field="*{noOfPassengers}" min="0" />
+        <p>Departure Date</p>
+        <input type="text"  th:field="*{departureDate}"/>
+
+        <!--<input type="date" data-th-datetime="true" th:field="*{departureDate}" th:text="${#temporals.format(searchObj.departureDate, 'dd/mm/yyyy')}"/>-->
+
+        <!--<input type="date" data-th-datetime="true" th:field="*{departureDate}"/>-->
+
+
+
+    </span>
+
     <input type="submit" />
 </form>
 

@@ -1,8 +1,11 @@
-FL101,Chennai,Hyderabad
-FL102,Leh,Chennai
-FL103,Pune,Bangalore
-FL104,Bangalore,Srinagar
-FL105,Chennai,Bangalore
-FL106,Pune, Bangalore
-FL107,Chennai,Delhi
-FL108,Chennai,Delhi
+FL101,Chennai,Hyderabad,100,50,04/09/2017
+FL111,Chennai,Hyderabad,100,50,05/09/2017
+FL102,Leh,Chennai,10,1,04/09/2017
+FL112,Leh,Chennai,10,1,05/09/2017
+FL103,Pune,Bangalore,2,0,10/09/2017
+FL104,Bangalore,Srinagar,3,0,04/09/2017
+FL105,Chennai,Bangalore,4,3,04/09/2017
+FL106,Pune,Bangalore,5,2,04/09/2017
+FL116,Pune,Bangalore,5,2,03/09/2017
+FL107,Chennai,Delhi,6,1,05/09/2017
+FL108,Chennai,Delhi,7,2,04/09/2017
