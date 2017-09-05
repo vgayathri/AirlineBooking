@@ -10,6 +10,8 @@ import java.io.IOException;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.*;
 
 /**
@@ -35,8 +37,8 @@ public final class FlightDataLoader {
                     int totalSeats = Integer.parseInt(flightData[3]);
                     int noOfSeatsTaken = Integer.parseInt(flightData[4]);
                     String strDateFormat = flightData[5];
-                    DateFormat formatter = new SimpleDateFormat("dd/mm/yyyy");
-                    Date departureDate = (Date)formatter.parse(strDateFormat);
+                    DateTimeFormatter dateFormatter = new DateTimeFormatter.
+                    LocalDate departureDate =  LocalDate.parse(strDateFormat,new DateTimeFormatter(""));
                     resultList.add(new Flight(flightID,src,destination,totalSeats,noOfSeatsTaken,departureDate));
 
 

@@ -1,5 +1,8 @@
 package airline.model;
 
+import org.springframework.format.annotation.DateTimeFormat;
+
+import java.time.LocalDate;
 import java.util.Date;
 
 /**
@@ -11,13 +14,14 @@ public class Flight {
     String destination;
     int totalNoSeats;
     int noOfSeatsTaken;
-    Date departureDate;
+    @DateTimeFormat(pattern = "dd/mm/yyyy")
+    LocalDate departureDate;
 
-    public Date getDepartureDate() {
+    public LocalDate getDepartureDate() {
         return departureDate;
     }
 
-    public void setDepartureDate(Date departureDate) {
+    public void setDepartureDate(LocalDate departureDate) {
         this.departureDate = departureDate;
     }
 
@@ -28,7 +32,7 @@ public class Flight {
         this.totalNoSeats = totalSeats;
         this.noOfSeatsTaken = noOfSeatsTaken;
     }
-    public Flight(String flightID, String source, String destination, int totalSeats, int noOfSeatsTaken, Date departureDate) {
+    public Flight(String flightID, String source, String destination, int totalSeats, int noOfSeatsTaken, LocalDate departureDate) {
         this.flightID = flightID;
         this.source = source;
         this.destination = destination;

@@ -1,5 +1,5 @@
 <!DOCTYPE HTML>
-<html xmlns:th="http://www.thymeleaf.org">
+<html xmlns:th="http://www.thymeleaf.org" xmlns:data-th="http://www.w3.org/1999/xhtml">
 <head>
     <title>Getting Started: Serving Web Content</title>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
@@ -27,7 +27,7 @@
         <p>No Of Passengers:</p>
          <input type="number" th:field="*{noOfPassengers}" min="0" />
         <p>Departure Date</p>
-        <input type="text"  th:field="*{departureDate}"/>
+        <input type="date" th:field="*{departureDate}"/>
 
         <!--<input type="date" data-th-datetime="true" th:field="*{departureDate}" th:text="${#temporals.format(searchObj.departureDate, 'dd/mm/yyyy')}"/>-->
 

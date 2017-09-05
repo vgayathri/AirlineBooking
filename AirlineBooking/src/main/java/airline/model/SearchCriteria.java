@@ -17,10 +17,10 @@ public class SearchCriteria {
     String destination;
     Integer noOfPassengers;
     @DateTimeFormat(pattern="dd/mm/yyyy")
-    Date departureDate;
+    LocalDate departureDate;
 
 
-    public SearchCriteria(String source, String destination, Integer noOfPassengers, Date departureDate) {
+    public SearchCriteria(String source, String destination, Integer noOfPassengers, LocalDate departureDate) {
         this.source = source;
         this.destination = destination;
         this.noOfPassengers = noOfPassengers;
@@ -52,11 +52,11 @@ public class SearchCriteria {
         this.noOfPassengers = noOfPassengers;
     }
 
-    public Date getDepartureDate() {
+    public LocalDate getDepartureDate() {
         return departureDate;
     }
 
-    public void setDepartureDate(Date departureDate) {
+    public void setDepartureDate(LocalDate departureDate) {
 
         this.departureDate = departureDate;
     }

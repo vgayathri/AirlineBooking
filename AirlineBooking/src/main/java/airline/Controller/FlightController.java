@@ -16,6 +16,7 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
 import airline.util.*;
+import java.time.*;
 import org.springframework.web.bind.WebDataBinder;
 
 /**
@@ -50,13 +51,13 @@ public  class FlightController {
         model.addAttribute("flights",resultSet);
         return "SearchResult";
     }
-
+/*
     @InitBinder
     public void initBinder(final WebDataBinder binder){
         final SimpleDateFormat dateFormat = new SimpleDateFormat("dd/mm/yyyy");
         binder.registerCustomEditor(Date.class, new CustomDateEditor(dateFormat, true));
     }
-
+*/
 
     @PostMapping(value="/searchFlightByPassengers")
     public String searchByPassengerSubmit(@ModelAttribute(value="searchObj")SearchCriteria searchCriteria, BindingResult bindingResult, Model model) {
