@@ -12,9 +12,8 @@ public class Flight {
     String flightID;
     String source;
     String destination;
-    int totalNoSeats;
-    int noOfSeatsTaken;
-    @DateTimeFormat(pattern = "dd/mm/yyyy")
+    CarrierType typeOfCarrier;
+    @DateTimeFormat(pattern = "d/MM/yyyy")
     LocalDate departureDate;
 
     public LocalDate getDepartureDate() {
@@ -25,27 +24,29 @@ public class Flight {
         this.departureDate = departureDate;
     }
 
-    public Flight(String flightID, String source, String destination, int totalSeats, int noOfSeatsTaken) {
+    public Flight(String flightID, String source, String destination) {
         this.flightID = flightID;
         this.source = source;
         this.destination = destination;
-        this.totalNoSeats = totalSeats;
-        this.noOfSeatsTaken = noOfSeatsTaken;
+
     }
-    public Flight(String flightID, String source, String destination, int totalSeats, int noOfSeatsTaken, LocalDate departureDate) {
+
+    public Flight(String flightID, String source, String destination, LocalDate departureDate) {
         this.flightID = flightID;
         this.source = source;
         this.destination = destination;
-        this.totalNoSeats = totalSeats;
-        this.noOfSeatsTaken = noOfSeatsTaken;
         this.departureDate = departureDate;
     }
 
-    public int getNoOfSeatsAvailable() {
-        int noOfSeatsAvlb = totalNoSeats - noOfSeatsTaken;
-        System.out.print(noOfSeatsAvlb);
-        return noOfSeatsAvlb;
+    public Flight(String flightID, String source,
+                  String destination, LocalDate departureDate, CarrierType carrierType) {
+        this.flightID = flightID;
+        this.source = source;
+        this.destination = destination;
+        this.departureDate = departureDate;
+        this.typeOfCarrier = carrierType;
     }
+
     public void setSource(String source) {
         this.source = source;
     }
@@ -70,19 +71,11 @@ public class Flight {
         flightID = flightID;
     }
 
-    public int getTotalNoSeats() {
-        return totalNoSeats;
+    public CarrierType getTypeOfCarrier() {
+        return typeOfCarrier;
     }
 
-    public void setTotalNoSeats(int totalNoSeats) {
-        this.totalNoSeats = totalNoSeats;
-    }
-
-    public int getNoOfSeatsTaken() {
-        return noOfSeatsTaken;
-    }
-
-    public void setNoOfSeatsTaken(int noOfSeatsTaken) {
-        this.noOfSeatsTaken = noOfSeatsTaken;
+    public void setTypeOfCarrier(CarrierType typeOfCarrier) {
+        this.typeOfCarrier = typeOfCarrier;
     }
 }

@@ -10,11 +10,15 @@
  <table border="1" style="width:300px">
     <tr>
         <th>FlightID</th>
+        <th>CarrierType</th>
         <th>Source</th>
         <th>Destination</th>
+
+
     </tr>
     <tr th:each="flightInfo:${flights}">
         <td th:text="${flightInfo.getFlightID()}"></td>
+        <td th:text="${flightInfo.getTypeOfCarrier().getCarrierTypeName()}"></td>
         <td th:text="${flightInfo.getSource()}"></td>
         <td th:text="${flightInfo.getDestination()}"></td>
 

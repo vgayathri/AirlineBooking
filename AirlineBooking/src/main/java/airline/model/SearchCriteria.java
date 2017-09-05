@@ -1,13 +1,10 @@
 package airline.model;
 
-import org.apache.tomcat.jni.Local;
+import com.sun.deploy.security.ValidationState;
+import org.hibernate.validator.constraints.NotEmpty;
 import org.springframework.format.annotation.DateTimeFormat;
 
-import java.text.DateFormat;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.time.LocalDate;
-import java.util.Date;
 
 /**
  * Created by Gayathri on 31/08/17.
@@ -16,9 +13,10 @@ public class SearchCriteria {
     String source;
     String destination;
     Integer noOfPassengers;
-    @DateTimeFormat(pattern="dd/mm/yyyy")
+    @DateTimeFormat(pattern="d/MM/yyyy")
     LocalDate departureDate;
-
+    @NotEmpty(message = "{class required}")
+    TravelClass travelClass;
 
     public SearchCriteria(String source, String destination, Integer noOfPassengers, LocalDate departureDate) {
         this.source = source;
@@ -26,6 +24,23 @@ public class SearchCriteria {
         this.noOfPassengers = noOfPassengers;
         this.departureDate = departureDate;
     }
+
+    public SearchCriteria(String source, String destination,
+                          Integer noOfPassengers, LocalDate departureDate, TravelClass travelClass ) {
+        this.source = source;
+        this.destination = destination;
+        this.noOfPassengers = noOfPassengers;
+        this.departureDate = departureDate;
+        this.travelClass = travelClass;
+    }
+
+    public SearchCriteria(String source, String destination, Integer noOfPassengers) {
+        this.source = source;
+        this.destination = destination;
+        this.noOfPassengers = noOfPassengers;
+        this.departureDate = null;
+    }
+
     public SearchCriteria() {}
 
     public String getSource() {
@@ -61,4 +76,15 @@ public class SearchCriteria {
         this.departureDate = departureDate;
     }
 
+    public void setTravelClass(TravelClass travelClass) {
+        this.travelClass = travelClass;
+    }
+
+    public TravelClass getTravelClass() {
+        return travelClass;
+    }
+    public String toString() {
+        return String.format("SRC: %s DEST: %s Class: %s",
+                source, destination,travelClass.getClassLetter());
+    }
 }

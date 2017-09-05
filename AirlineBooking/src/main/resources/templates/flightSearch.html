@@ -27,13 +27,16 @@
         <p>No Of Passengers:</p>
          <input type="number" th:field="*{noOfPassengers}" min="0" />
         <p>Departure Date</p>
-        <input type="date" th:field="*{departureDate}"/>
+        <input type="text"  th:field="*{departureDate}" th:value="${departureDate}"/>
 
-        <!--<input type="date" data-th-datetime="true" th:field="*{departureDate}" th:text="${#temporals.format(searchObj.departureDate, 'dd/mm/yyyy')}"/>-->
-
-        <!--<input type="date" data-th-datetime="true" th:field="*{departureDate}"/>-->
-
-
+        <select class="form-control" id="travelClass"
+                name="travelClass" th:field="*{travelClass}" th:required="required">
+            <option value="">Select Class of Travel</option>
+            <option th:each="serviceClass : ${TravelClass}"
+                    th:value="${serviceClass}"
+                    th:text="${serviceClass}">
+            </option>
+        </select>
 
     </span>
 

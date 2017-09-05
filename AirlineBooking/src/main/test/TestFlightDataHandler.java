@@ -3,31 +3,28 @@
  *
  */
 
-package airline;
-
 import airline.model.Flight;
-import airline.services.*;
-import airline.util.*;
 import airline.model.SearchCriteria;
-
-
-import org.junit.*;
+import airline.services.FlightDataHandler;
+import airline.repositories.FlightDataLoader;
+import org.junit.Before;
+import org.junit.Test;
 
 import java.util.List;
-import java.util.stream.*;
 
 import static org.junit.Assert.assertEquals;
-
 
 public class TestFlightDataHandler {
 
     private FlightDataHandler testDataHandler;
+
+
     private SearchCriteria testSearchCriteria;
 
     @Before
-    protected void setUp() throws Exception {
+    public void setUp() throws Exception {
         testDataHandler = new FlightDataHandler(FlightDataLoader.populateFromCSVFile("TestFlightDetails.txt"));
-        testSearchCriteria = new SearchCriteria("Chennai", "Hyderabad");
+        testSearchCriteria = new SearchCriteria("Chennai", "Hyderabad",1);
     }
 
     @Test
@@ -39,7 +36,7 @@ public class TestFlightDataHandler {
 
     @Test
     public void testIfAllFlightsBySrc() {
-        List<String> listAllSrcLocations = testDataHandler.getAllSrcLocations();
+        List<String> listAllSrcLocations = testDataHandler.getAllSourceLocations();
         listAllSrcLocations.stream()
                 .forEach(System.out::println);
         assertEquals(4,listAllSrcLocations.size());
@@ -82,10 +79,6 @@ public class TestFlightDataHandler {
 
         assertEquals(0,listAllMatchingFlights.size());
     }
-
-
-
-
 
 }
 

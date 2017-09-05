@@ -1,5 +1,6 @@
-package airline.util;
+package airline.repositories;
 
+import airline.model.CarrierType;
 import airline.model.Flight;
 import org.springframework.core.io.ClassPathResource;
 
@@ -7,9 +8,6 @@ import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
-import java.text.DateFormat;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.*;
@@ -37,17 +35,17 @@ public final class FlightDataLoader {
                     int totalSeats = Integer.parseInt(flightData[3]);
                     int noOfSeatsTaken = Integer.parseInt(flightData[4]);
                     String strDateFormat = flightData[5];
-                    DateTimeFormatter dateFormatter = new DateTimeFormatter.
-                    LocalDate departureDate =  LocalDate.parse(strDateFormat,new DateTimeFormatter(""));
-                    resultList.add(new Flight(flightID,src,destination,totalSeats,noOfSeatsTaken,departureDate));
+                    CarrierType flightCarrierType = CarrierType.valueOf(flightData[6]);
+                    DateTimeFormatter formatter = DateTimeFormatter.ofPattern("d/MM/yyyy");
+                    LocalDate departureDate = LocalDate.parse(strDateFormat, formatter);
+                    resultList.add(new Flight(flightID,src,destination,departureDate,flightCarrierType));
 
 
                 }
 
             } catch (IOException e) {
                 e.printStackTrace();
-            } catch (ParseException e) {
-                e.printStackTrace();
+
             }
 
         return resultList;

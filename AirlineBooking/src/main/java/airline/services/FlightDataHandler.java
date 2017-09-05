@@ -1,11 +1,11 @@
 package airline.services;
 
-import airline.model.Flight;
+import airline.model.*;
 
 import java.util.*;
 import java.util.stream.Collectors;
 
-import airline.model.SearchCriteria;
+import airline.repositories.CarrierDataLoader;
 
 
 /**
@@ -14,6 +14,8 @@ import airline.model.SearchCriteria;
 public class FlightDataHandler {
     private List<Flight> listOfAllFlights;
 
+    private Map<CarrierType,CarrierDetails> mapOfCarrierTypes = new HashMap<>();
+
     public FlightDataHandler(String flightInfoFileName) {
         listOfAllFlights = new ArrayList<Flight>();
 
@@ -21,6 +23,30 @@ public class FlightDataHandler {
 
     public FlightDataHandler(List<Flight> inputList) {
         listOfAllFlights = inputList;
+        populateCarrierTypes();
+
+    }
+
+    public void populateCarrierTypes()
+    {
+        mapOfCarrierTypes = CarrierDataLoader.populateFromCSVFile("CarrierDetails.txt");
+    }
+
+    public boolean isSeatAvailableForClass(Flight flight, TravelClass travelClass) {
+
+        CarrierType typeOfCarrier = flight.getTypeOfCarrier();
+        System.out.println("Carrier type : " + typeOfCarrier.toString());
+        if (mapOfCarrierTypes.containsKey(typeOfCarrier)) {
+            if (mapOfCarrierTypes.get(typeOfCarrier).getSeatsForClass(travelClass) > 0) {
+                return true;
+            } else {
+                return false;
+            }
+        }else {
+            System.out.println("Carrier type not found");
+        }
+        return  false;
+
     }
 
     public List<String> getAllSourceLocations() {
@@ -68,7 +94,7 @@ public class FlightDataHandler {
         listOfFlightsbySrcNDestByAvlb =  listOfAllFlights.stream()
                 .filter(x->x.getSource().equalsIgnoreCase(searchFld.getSource()))
                 .filter(x->x.getDestination().equalsIgnoreCase(searchFld.getDestination()))
-                .filter(x->x.getNoOfSeatsAvailable()>=searchFld.getNoOfPassengers())
+                .filter(x->isSeatAvailableForClass(x,searchFld.getTravelClass()))
                 .collect(Collectors.toList());
 
         if (searchFld.getDepartureDate() != null) {
