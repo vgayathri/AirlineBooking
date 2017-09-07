@@ -5,6 +5,7 @@ import org.hibernate.validator.constraints.NotEmpty;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 
 /**
  * Created by Gayathri on 31/08/17.
@@ -13,9 +14,10 @@ public class SearchCriteria {
     String source;
     String destination;
     Integer noOfPassengers;
+    String departureDateStr;
     @DateTimeFormat(pattern="d/MM/yyyy")
     LocalDate departureDate;
-    @NotEmpty(message = "{class required}")
+    @NotEmpty(message = "{class of travel required}")
     TravelClass travelClass;
 
     public SearchCriteria(String source, String destination, Integer noOfPassengers, LocalDate departureDate) {
@@ -38,7 +40,6 @@ public class SearchCriteria {
         this.source = source;
         this.destination = destination;
         this.noOfPassengers = noOfPassengers;
-        this.departureDate = null;
     }
 
     public SearchCriteria() {}
@@ -76,6 +77,25 @@ public class SearchCriteria {
         this.departureDate = departureDate;
     }
 
+
+    public String getDepartureDateStr() {
+        return departureDateStr;
+    }
+
+    public void setDepartureDateStr(String departDateStr) {
+        this.departureDateStr = departDateStr;
+        if (departDateStr.isEmpty()) {
+            this.departureDate = null;
+            return;
+        }
+        try {
+            setDepartureDate(LocalDate.parse(getDepartureDateStr()));
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+    }
+
     public void setTravelClass(TravelClass travelClass) {
         this.travelClass = travelClass;
     }
@@ -83,8 +103,5 @@ public class SearchCriteria {
     public TravelClass getTravelClass() {
         return travelClass;
     }
-    public String toString() {
-        return String.format("SRC: %s DEST: %s Class: %s",
-                source, destination,travelClass.getClassLetter());
-    }
+
 }

@@ -2,7 +2,9 @@ package airline.repositories;
 
 import airline.model.CarrierType;
 import airline.model.Flight;
+import org.apache.tomcat.jni.Local;
 import org.springframework.core.io.ClassPathResource;
+import org.springframework.stereotype.Repository;
 
 import java.io.BufferedReader;
 import java.io.File;
@@ -15,40 +17,66 @@ import java.util.*;
 /**
  * Created by Gayathri on 31/08/17.
  */
-public final class FlightDataLoader {
+@Repository
+public class FlightDataLoader {
 
-    public static List <Flight> populateFromCSVFile(String fileName) {
-            List <Flight> resultList = new ArrayList<Flight>();
-            String line = "";
-            String cvsSplitBy = ",";
+    List <Flight> listOfFlights = new ArrayList<Flight>();
+    public FlightDataLoader () {
+        createFlightList();
+    }
 
-            try {
-                File file = new ClassPathResource(fileName).getFile();
-                BufferedReader br = new BufferedReader(new FileReader(file));
+    public FlightDataLoader (String flightDataFileName) {
+        populateFromCSVFile(flightDataFileName);
+    }
 
-                while ((line = br.readLine()) != null) {
-                    // use comma as separator
-                    String[] flightData = line.split(cvsSplitBy);
-                    String flightID = flightData[0];
-                    String src = flightData[1];
-                    String destination = flightData[2];
-                    int totalSeats = Integer.parseInt(flightData[3]);
-                    int noOfSeatsTaken = Integer.parseInt(flightData[4]);
-                    String strDateFormat = flightData[5];
-                    CarrierType flightCarrierType = CarrierType.valueOf(flightData[6]);
-                    DateTimeFormatter formatter = DateTimeFormatter.ofPattern("d/MM/yyyy");
-                    LocalDate departureDate = LocalDate.parse(strDateFormat, formatter);
-                    resultList.add(new Flight(flightID,src,destination,departureDate,flightCarrierType));
+    public void createFlightList() {
 
+        LocalDate todaysDate = LocalDate.now();
+        LocalDate nextDate = todaysDate.plusDays(2);
+        listOfFlights.add(new Flight("FL101","Source1","Dest1",todaysDate));
+        listOfFlights.add(new Flight("FL102","Source1","Dest1",nextDate));
+        listOfFlights.add(new Flight("FL203","Source2","Dest2",todaysDate));
+        listOfFlights.add(new Flight("FL204","Source2","Dest2",nextDate));
+        listOfFlights.add(new Flight("FL305","Source3","Dest3",todaysDate));
+        listOfFlights.add(new Flight("FL306","Source3","Dest3",nextDate));
 
-                }
+    }
 
-            } catch (IOException e) {
-                e.printStackTrace();
+    public void populateFromCSVFile(String fileName) {
+        String line = "";
+        String cvsSplitBy = ",";
 
+        try {
+            File file = new ClassPathResource(fileName).getFile();
+            BufferedReader br = new BufferedReader(new FileReader(file));
+
+            while ((line = br.readLine()) != null) {
+                // use comma as separator
+
+                String[] flightData = line.split(cvsSplitBy);
+                if (line.startsWith("##"))
+                    continue;
+                String flightID = flightData[0];
+                String src = flightData[1];
+                String destination = flightData[2];
+                String strDateFormat = flightData[3];
+                CarrierType flightCarrierType = CarrierType.valueOf(flightData[4]);
+                DateTimeFormatter formatter = DateTimeFormatter.ofPattern("d/MM/yyyy");
+                LocalDate departureDate = LocalDate.parse(strDateFormat, formatter);
+                listOfFlights.add(new Flight(flightID,src,destination,departureDate));
             }
 
-        return resultList;
+        } catch (IOException e) {
+            e.printStackTrace();
+
         }
+
+        return;
+    }
+
+    public List <Flight> getFlightList() {
+        return listOfFlights;
+
+    }
 
 }

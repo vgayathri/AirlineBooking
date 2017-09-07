@@ -2,4 +2,4 @@
 ##hasEconomy, hasBusiness and hasFirstClass are booleans,NoOfPassengersinEachClass
 BOEING777,true,true,true,8,35,195
 AIRBUS321,false,true,true,0,20,152
-AIRBUS319V2,true,true,true,0,0,144
+AIRBUS319V2,false,false,true,0,0,144

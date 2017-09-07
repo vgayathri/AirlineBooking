@@ -26,6 +26,6 @@ public enum TravelClass {
             }
         }
 
-        throw new IllegalArgumentException(letter + " is not a valid PropName");
+        throw new IllegalArgumentException(letter + " is not a valid Travel Class");
     }
 }

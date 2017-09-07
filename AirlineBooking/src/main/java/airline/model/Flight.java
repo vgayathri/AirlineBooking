@@ -12,7 +12,7 @@ public class Flight {
     String flightID;
     String source;
     String destination;
-    CarrierType typeOfCarrier;
+    Carrier carrierDetails;
     @DateTimeFormat(pattern = "d/MM/yyyy")
     LocalDate departureDate;
 
@@ -38,13 +38,17 @@ public class Flight {
         this.departureDate = departureDate;
     }
 
+    public String getFlightID() {
+        return flightID;
+    }
+
     public Flight(String flightID, String source,
-                  String destination, LocalDate departureDate, CarrierType carrierType) {
+                  String destination, LocalDate departureDate, Carrier flightCarrier) {
         this.flightID = flightID;
         this.source = source;
         this.destination = destination;
         this.departureDate = departureDate;
-        this.typeOfCarrier = carrierType;
+        this.carrierDetails = flightCarrier;
     }
 
     public void setSource(String source) {
@@ -63,19 +67,32 @@ public class Flight {
         return source;
     }
 
-    public String getFlightID() {
-        return flightID;
-    }
-
-    public void setFlightID(String flightID) {
-        flightID = flightID;
-    }
-
     public CarrierType getTypeOfCarrier() {
-        return typeOfCarrier;
+        return carrierDetails.getCarrierType();
     }
 
-    public void setTypeOfCarrier(CarrierType typeOfCarrier) {
-        this.typeOfCarrier = typeOfCarrier;
+    public Boolean isFlightBetweenSrcAndDestination(String src, String destination) {
+        return (getSource().equalsIgnoreCase(src) && getDestination().equalsIgnoreCase(destination));
     }
+
+    public boolean isCarrierTypeEquals(CarrierType carrierType) {
+        return carrierDetails.isCarrierTypeEquals(carrierType);
+    }
+
+    public boolean isDepartDateEquals(LocalDate giveDate) {
+        return getDepartureDate().equals(giveDate);
+    }
+
+    public void setCarrierDetails(Carrier carrierModel) {
+        this.carrierDetails = carrierModel;
+    }
+
+    public boolean isTravelClassAvailbleinFlight(TravelClass classOfTravel) {
+        return this.carrierDetails.doesCarrierHaveClass(classOfTravel);
+    }
+
+    public int getNoOfSeatsForTravelClass(TravelClass travelClass) {
+        return carrierDetails.getSeatsForClass(travelClass);
+    }
+
 }

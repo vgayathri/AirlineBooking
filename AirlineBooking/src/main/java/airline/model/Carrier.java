@@ -7,23 +7,18 @@ import java.util.Map;
  * Created by Gayathri on 05/09/17.
  */
 
-public class CarrierDetails {
+
+public class Carrier {
 
     CarrierType carrierType;
-    Boolean hasEconomyClass;
-    Boolean hasBusinessClass;
-    Boolean hasFirstClass;
     Map<TravelClass, Integer> mapOfSeatsPerClass;
+    Map<TravelClass,Float> mapOfBasePriceToClass;
 
-    public CarrierDetails(CarrierType carrierType, Boolean hasEconomy,
-                          Boolean hasBusiness, Boolean hasFirstClass, Map<TravelClass, Integer> mapOfSeatsPerClass )
+    public Carrier(CarrierType carrierType,
+                   Map<TravelClass, Integer> mapOfSeatsPerClass )
     {
         this.carrierType = carrierType;
-        this.hasEconomyClass = hasEconomy;
-        this.hasBusinessClass = hasBusiness;
-        this.hasFirstClass = hasFirstClass;
         this.mapOfSeatsPerClass = mapOfSeatsPerClass;
-
     }
 
     public Map<TravelClass,Integer> getMapOfClassToSeats() {
@@ -51,32 +46,8 @@ public class CarrierDetails {
         this.carrierType = carrierType;
     }
 
-    public boolean isHasEconomy() {
-        return hasEconomyClass;
-    }
-
-    public void setHasEconomy(boolean hasEconomy) {
-        this.hasEconomyClass = hasEconomy;
-    }
-
-    public boolean isHasBusiness() {
-        return hasBusinessClass;
-    }
-
-    public void setHasBusiness(boolean hasBusiness) {
-        this.hasBusinessClass = hasBusiness;
-    }
-
-    public boolean isHasFirstClass() {
-        return hasFirstClass;
-    }
-
-    public void setHasFirstClass(boolean hasFirstClass) {
-        this.hasFirstClass = hasFirstClass;
-    }
-
-    public Map<TravelClass, Integer> getMapOfSeatsPerClass() {
-        return mapOfSeatsPerClass;
+    public boolean doesCarrierHaveClass(TravelClass travelClass) {
+        return mapOfSeatsPerClass.containsKey(travelClass);
     }
 
     public void setMapOfSeatsPerClass(Map<TravelClass, Integer> mapOfSeatsPerClass) {
@@ -88,6 +59,13 @@ public class CarrierDetails {
             return mapOfSeatsPerClass.get(travelClass);
         }
         return 0;
+    }
+
+    public boolean isCarrierTypeEquals(CarrierType carrierType) {
+        if (getCarrierType().equals(carrierType))
+            return true;
+        else
+            return false;
     }
 
 }

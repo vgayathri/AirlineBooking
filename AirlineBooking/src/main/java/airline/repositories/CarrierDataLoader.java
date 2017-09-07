@@ -1,24 +1,57 @@
 package airline.repositories;
 
-import airline.model.CarrierDetails;
+import airline.model.Carrier;
 import airline.model.TravelClass;
 import airline.model.CarrierType;
 import org.springframework.core.io.ClassPathResource;
+import org.springframework.stereotype.Repository;
 
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 /**
  * Created by Gayathri on 05/09/17.
  */
+@Repository
 public class CarrierDataLoader {
+    List <Carrier> carrierList = new ArrayList<>();
 
-    public static Map<CarrierType,CarrierDetails> populateFromCSVFile(String fileName) {
-        Map <CarrierType, CarrierDetails> resultList = new HashMap<>();
+    public CarrierDataLoader () {
+        createCarrierList();
+    }
+    public CarrierDataLoader (String dataFileName) {
+        populateFromCSVFile(dataFileName);
+    }
+
+    public void createCarrierList() {
+
+
+        final Map<TravelClass, Integer> travelClassMapBoeing = new HashMap<TravelClass, Integer>();
+        travelClassMapBoeing.put(TravelClass.FIRST, 8);
+        travelClassMapBoeing.put(TravelClass.BUSINESS, 35);
+        travelClassMapBoeing.put(TravelClass.ECONOMY,195);
+
+
+        final Map<TravelClass, Integer> travelClassMap321 = new HashMap<TravelClass, Integer>();
+        travelClassMap321.put(TravelClass.BUSINESS, 20);
+        travelClassMap321.put(TravelClass.ECONOMY,152);
+
+        final Map<TravelClass, Integer> travelClassMap319v2 = new HashMap<TravelClass, Integer>();
+        travelClassMap319v2.put(TravelClass.ECONOMY, 144);
+
+        carrierList.add(new Carrier(CarrierType.BOEING777,travelClassMapBoeing));
+        carrierList.add(new Carrier(CarrierType.AIRBUS321,travelClassMap321));
+        carrierList.add(new Carrier(CarrierType.AIRBUS319V2,travelClassMap319v2));
+
+    }
+
+    public void populateFromCSVFile(String fileName) {
 
         String line = "";
         String cvsSplitBy = ",";
@@ -42,21 +75,23 @@ public class CarrierDataLoader {
                 int seatsForFirst = Integer.parseInt(carrierData[4]);
                 int seatsForBusiness = Integer.parseInt(carrierData[5]);
                 int seatsForEconomy = Integer.parseInt(carrierData[6]);
-                seatsPerClass.putIfAbsent(TravelClass.FIRST,seatsForFirst);
-                seatsPerClass.putIfAbsent(TravelClass.BUSINESS,seatsForBusiness);
-                seatsPerClass.putIfAbsent(TravelClass.ECONOMY,seatsForEconomy);
-                System.out.print(seatsPerClass.toString());
-                resultList.put(carrierType,new CarrierDetails(carrierType,
-                        hasFirstClass,hasBusinessClass,hasEconomyClass,seatsPerClass));
+                if (hasFirstClass)
+                    seatsPerClass.putIfAbsent(TravelClass.FIRST,seatsForFirst);
+                if (hasBusinessClass)
+                    seatsPerClass.putIfAbsent(TravelClass.BUSINESS,seatsForBusiness);
+                if (hasEconomyClass)
+                    seatsPerClass.putIfAbsent(TravelClass.ECONOMY,seatsForEconomy);
+                carrierList.add (new Carrier(carrierType,seatsPerClass));
 
             }
-            System.out.println("Carrier type added is " + resultList.toString() );
-
         } catch (IOException e) {
             e.printStackTrace();
         }
 
-        return resultList;
+    }
+
+    public List <Carrier> getCarrierList() {
+        return carrierList;
     }
 
 }

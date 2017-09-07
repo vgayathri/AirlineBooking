@@ -4,9 +4,11 @@ import airline.model.CarrierType;
 import airline.model.Flight;
 import airline.model.SearchCriteria;
 import airline.model.TravelClass;
-import airline.services.FlightDataHandler;
+import airline.services.FlightServiceHandler;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -23,17 +25,14 @@ import airline.repositories.*;
 public  class FlightController {
 
     String flightInfoFileName="FlightDetails.txt";
-    private FlightDataHandler flightDataHandler = new FlightDataHandler(FlightDataLoader.populateFromCSVFile(flightInfoFileName));
 
-    public static void main(String []args) {
-        SpringApplication.run(FlightController.class,args);
-
-    }
+    @Autowired
+    protected FlightServiceHandler flightServiceHandler;
 
     @RequestMapping(value="/")
     public String welcomeMessage(Model newModel) {
-        List <String> srcCities = flightDataHandler.getAllSourceLocations();
-        List <String> dstCities = flightDataHandler.getAllDestLocations();
+        List <String> srcCities = flightServiceHandler.getAllSourceLocations();
+        List <String> dstCities = flightServiceHandler.getAllDestLocations();
         newModel.addAttribute("Sources", srcCities);
         newModel.addAttribute("Destinations",dstCities);
         newModel.addAttribute("searchObj", new SearchCriteria());
@@ -44,27 +43,16 @@ public  class FlightController {
     }
 
     @PostMapping(value="/searchFlight")
-    public String searchSubmit(@ModelAttribute(value="searchObj")SearchCriteria searchCriteria, Model model) {
-        List<Flight> resultSet = flightDataHandler.getBySrcAndDestn(searchCriteria);
-        model.addAttribute("flights",resultSet);
-        return "SearchResult";
-    }
-
-
-    @PostMapping(value="/searchFlightByPassengers")
+    @DateTimeFormat(pattern="d/MM/yyyy")
     public String searchByPassengerSubmit(@ModelAttribute(value="searchObj")SearchCriteria searchCriteria, BindingResult bindingResult, Model model) {
 
         try {
-            System.out.println(bindingResult.getModel().toString());
-            System.out.println(searchCriteria.toString());
            if (searchCriteria.getNoOfPassengers() == 0)
                searchCriteria.setNoOfPassengers(1);
            } catch (NullPointerException e) {
             searchCriteria.setNoOfPassengers(1);
         }
-        System.out.println("Search criteria " + searchCriteria.toString());
-
-        List<Flight> resultSet = flightDataHandler.getBySrcAndDestnAndPassengerCount(searchCriteria);
+        List<Flight> resultSet = flightServiceHandler.searchForFlights(searchCriteria);
         model.addAttribute("flights",resultSet);
         return "SearchResult";
     }

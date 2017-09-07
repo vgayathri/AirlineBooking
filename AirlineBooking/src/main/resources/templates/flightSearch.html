@@ -5,17 +5,17 @@
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
 </head>
 <body>
-<p th:text = "'Welcome to TWAirline'"/>
-<form action="#" th:action="@{/searchFlightByPassengers}" th:object="${searchObj}" method="post">
+<b><p th:text = "'Welcome to TWAirline'"/></b>
+<form action="#" th:action="@{/searchFlight}" th:object="${searchObj}" method="post">
     <span>
-        <b>From: </b>
+        From:
         <select class="form-control" id="source" name="source" th:field="*{source}" th:required="required" >
             <option value="">Select From City</option>
             <option th:each="city : ${Sources}"
                 th:value="${city}"
                 th:text="${city}"></option>
         </select>
-        <b> To: </b>
+        To:
         <select class="form-control" id="destination" name="destination" th:field="*{destination}" th:required="required">
             <option value="">Select To City</option>
             <option th:each="city : ${Destinations}"
@@ -27,8 +27,8 @@
         <p>No Of Passengers:</p>
          <input type="number" th:field="*{noOfPassengers}" min="0" />
         <p>Departure Date</p>
-        <input type="text"  th:field="*{departureDate}" th:value="${departureDate}"/>
-
+        <input type="date"  th:field="*{departureDateStr}"
+               th:value="*{departureDateStr}"/>
         <select class="form-control" id="travelClass"
                 name="travelClass" th:field="*{travelClass}" th:required="required">
             <option value="">Select Class of Travel</option>
