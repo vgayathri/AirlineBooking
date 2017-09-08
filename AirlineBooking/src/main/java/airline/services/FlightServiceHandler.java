@@ -3,6 +3,7 @@ package airline.services;
 import airline.model.Carrier;
 import airline.model.Flight;
 import airline.model.SearchCriteria;
+import airline.model.TravelClass;
 import airline.repositories.CarrierDataLoader;
 import airline.repositories.FlightDataLoader;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,6 +12,7 @@ import org.springframework.stereotype.Service;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.function.Predicate;
+import java.util.stream.Collector;
 import java.util.stream.Collectors;
 
 
@@ -58,9 +60,6 @@ public class FlightServiceHandler {
         listOfAllCarriers = carrierListLoader.getCarrierList();
         listOfAllFlights = flightListLoader.getFlightList();
         setCarrierInfoForAllFlight();
-        System.out.println("Listofcarriers " + listOfAllCarriers);
-        System.out.println("ListofFlights " + listOfAllFlights);
-
     }
 
     public  Predicate<Flight> doesFlightRouteMatch(SearchCriteria filterCriteria) {
@@ -74,7 +73,9 @@ public class FlightServiceHandler {
 
 
     public  Predicate<Flight> doesFlightHaveSeatsInTravelClass(SearchCriteria filterCriteria) {
-        return flight -> (flight.isTravelClassAvailbleinFlight(filterCriteria.getTravelClass()) &&
+
+        return flight -> (null==filterCriteria.getTravelClass() ||
+                flight.isTravelClassAvailbleinFlight(filterCriteria.getTravelClass()) &&
                 flight.getNoOfSeatsForTravelClass(filterCriteria.getTravelClass()) >= filterCriteria.getNoOfPassengers());
     }
 
@@ -114,6 +115,18 @@ public class FlightServiceHandler {
 
         return listOfFlightsbySrcNDestByAvlb;
 
+    }
+
+    public List<Float> calculateBasePriceForSeatsForFlightList(List<Flight> filteredFlights, SearchCriteria searchCriteria) {
+        int noOfPassengers = searchCriteria.getNoOfPassengers();
+        TravelClass classOfTravel = searchCriteria.getTravelClass();
+        List <Float> costOfSeatsList =  new ArrayList<Float>();
+        for (Flight flight:filteredFlights
+             ) {
+            Float costOfSeats = flight.getBasePriceForATravelClass(classOfTravel) * noOfPassengers;
+            costOfSeatsList.add(costOfSeats);
+        }
+        return costOfSeatsList;
     }
 
 }

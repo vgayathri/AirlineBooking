@@ -2,6 +2,7 @@ package airline.services;
 
 import airline.model.Flight;
 import airline.model.SearchCriteria;
+import airline.model.TravelClass;
 import airline.repositories.CarrierDataLoader;
 import airline.repositories.FlightDataLoader;
 import org.junit.Test;
@@ -18,6 +19,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
+import static junit.framework.TestCase.assertTrue;
 import static org.junit.Assert.assertEquals;
 
 @RunWith(SpringRunner.class)
@@ -47,12 +49,10 @@ public class FlightSearchServiceTest {
         Mockito.when(flightRepository.getFlightList())
                 .thenReturn(listOfMockFlights);
         SearchCriteria searchCriteria = new SearchCriteria();
-        searchCriteria.setSource("Src1");
-        searchCriteria.setDestination("Dest1");
+        searchCriteria.setSource("src");
+        searchCriteria.setDestination("dst");
 
-        List<Flight> listOfFlights;
-        System.out.println("MockData" + listOfMockFlights.toString());
-        System.out.println(flightSearchService.getAllSourceLocations().toString());
+        List<Flight> listOfFlights = new ArrayList<Flight>();
 
         try {
             listOfFlights = flightSearchService.searchForFlights(searchCriteria);
@@ -61,6 +61,8 @@ public class FlightSearchServiceTest {
             e.printStackTrace();
             return ;
         }
-        assertEquals(listOfFlights, listOfMockFlights);
+        listOfFlights.stream()
+                .forEach(System.out::print);
+        assertTrue(listOfFlights.size() == 0);
     }
 }

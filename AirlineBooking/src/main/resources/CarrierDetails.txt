@@ -1,5 +1,5 @@
 ##CarrierTypeOrdinalValue - 0,1,2
 ##hasEconomy, hasBusiness and hasFirstClass are booleans,NoOfPassengersinEachClass
-BOEING777,true,true,true,8,35,195
-AIRBUS321,false,true,true,0,20,152
-AIRBUS319V2,false,false,true,0,0,144
+BOEING777,true,true,true,8,35,195,20000,13000,6000
+AIRBUS321,false,true,true,0,20,152,0,10000,5000
+AIRBUS319V2,false,false,true,0,0,144,0,0,4000

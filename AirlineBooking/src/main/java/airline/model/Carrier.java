@@ -11,30 +11,45 @@ import java.util.Map;
 public class Carrier {
 
     CarrierType carrierType;
-    Map<TravelClass, Integer> mapOfSeatsPerClass;
-    Map<TravelClass,Float> mapOfBasePriceToClass;
+    Map<TravelClass, SeatsInfo> mapOfTravelClassToSeatsInfo;
+    Map<TravelClass,Float> mapOfClassToBasePrice;
+
+    public Carrier( )
+    {}
+
 
     public Carrier(CarrierType carrierType,
-                   Map<TravelClass, Integer> mapOfSeatsPerClass )
+                   Map<TravelClass, SeatsInfo> mapOfSeatsPerClass )
     {
         this.carrierType = carrierType;
-        this.mapOfSeatsPerClass = mapOfSeatsPerClass;
+        this.mapOfTravelClassToSeatsInfo = mapOfSeatsPerClass;
     }
 
-    public Map<TravelClass,Integer> getMapOfClassToSeats() {
-        return mapOfSeatsPerClass;
+
+    public Map<TravelClass,SeatsInfo> getMapOfClassToSeats() {
+        return mapOfTravelClassToSeatsInfo;
     }
 
-    public Integer getSeatsForClass(TravelClass classType) {
-        if (mapOfSeatsPerClass.containsKey(classType))
-            return mapOfSeatsPerClass.get(classType);
+    public Integer getAllocatedSeatsForClass(TravelClass classType) {
+        if (mapOfTravelClassToSeatsInfo.containsKey(classType))
+            return mapOfTravelClassToSeatsInfo.get(classType).getNoOfAllocatedSeats();
+        else
+            return 0;
+
+    }
+    public Integer getAvailableSeatsForClass(TravelClass classType) {
+        if (mapOfTravelClassToSeatsInfo.containsKey(classType))
+            return mapOfTravelClassToSeatsInfo.get(classType).getNoOfSeatsAvlb();
         else
             return 0;
 
     }
 
-    public void printSeatsForAllClasses() {
-        mapOfSeatsPerClass.forEach((k,v)->System.out.println("Class : " + k + " Seats : " + v));
+    public Float getBasePriceForTraveClass(TravelClass classType) {
+        if (mapOfTravelClassToSeatsInfo.containsKey(classType))
+            return mapOfTravelClassToSeatsInfo.get(classType).getBasePricePerSeat();
+        else
+            return 0.0f;
 
     }
 
@@ -47,18 +62,11 @@ public class Carrier {
     }
 
     public boolean doesCarrierHaveClass(TravelClass travelClass) {
-        return mapOfSeatsPerClass.containsKey(travelClass);
+        return mapOfTravelClassToSeatsInfo.containsKey(travelClass);
     }
 
-    public void setMapOfSeatsPerClass(Map<TravelClass, Integer> mapOfSeatsPerClass) {
-        this.mapOfSeatsPerClass = mapOfSeatsPerClass;
-    }
-    public Integer getNoOfSeatsPerClassForCarrier(CarrierType typeOfCarrier,
-                                                  TravelClass travelClass) {
-        if (carrierType == typeOfCarrier) {
-            return mapOfSeatsPerClass.get(travelClass);
-        }
-        return 0;
+    public void setMapOfSeatsPerClass(Map<TravelClass, SeatsInfo> mapOfSeatsPerClass) {
+        this.mapOfTravelClassToSeatsInfo = mapOfSeatsPerClass;
     }
 
     public boolean isCarrierTypeEquals(CarrierType carrierType) {

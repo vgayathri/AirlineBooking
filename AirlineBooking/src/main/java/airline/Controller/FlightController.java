@@ -14,6 +14,8 @@ import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import airline.repositories.*;
 
@@ -54,6 +56,8 @@ public  class FlightController {
         }
         List<Flight> resultSet = flightServiceHandler.searchForFlights(searchCriteria);
         model.addAttribute("flights",resultSet);
+        List <Float> priceList = flightServiceHandler.calculateBasePriceForSeatsForFlightList(resultSet,searchCriteria);
+        model.addAttribute("prices",priceList);
         return "SearchResult";
     }
 }

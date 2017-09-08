@@ -1,6 +1,7 @@
 package airline.repositories;
 
 import airline.model.Carrier;
+import airline.model.SeatsInfo;
 import airline.model.TravelClass;
 import airline.model.CarrierType;
 import org.springframework.core.io.ClassPathResource;
@@ -32,18 +33,18 @@ public class CarrierDataLoader {
     public void createCarrierList() {
 
 
-        final Map<TravelClass, Integer> travelClassMapBoeing = new HashMap<TravelClass, Integer>();
-        travelClassMapBoeing.put(TravelClass.FIRST, 8);
-        travelClassMapBoeing.put(TravelClass.BUSINESS, 35);
-        travelClassMapBoeing.put(TravelClass.ECONOMY,195);
+        final Map<TravelClass, SeatsInfo> travelClassMapBoeing = new HashMap<TravelClass, SeatsInfo>();
+        travelClassMapBoeing.put(TravelClass.FIRST, new SeatsInfo(8,20000f));
+        travelClassMapBoeing.put(TravelClass.BUSINESS, new SeatsInfo(35,13000f));
+        travelClassMapBoeing.put(TravelClass.ECONOMY,new SeatsInfo (195,6000f));
 
 
-        final Map<TravelClass, Integer> travelClassMap321 = new HashMap<TravelClass, Integer>();
-        travelClassMap321.put(TravelClass.BUSINESS, 20);
-        travelClassMap321.put(TravelClass.ECONOMY,152);
+        final Map<TravelClass, SeatsInfo> travelClassMap321 = new HashMap<TravelClass, SeatsInfo>();
+        travelClassMap321.put(TravelClass.BUSINESS, new SeatsInfo(20,10000f));
+        travelClassMap321.put(TravelClass.ECONOMY,new SeatsInfo(152,5000f));
 
-        final Map<TravelClass, Integer> travelClassMap319v2 = new HashMap<TravelClass, Integer>();
-        travelClassMap319v2.put(TravelClass.ECONOMY, 144);
+        final Map<TravelClass, SeatsInfo> travelClassMap319v2 = new HashMap<TravelClass, SeatsInfo>();
+        travelClassMap319v2.put(TravelClass.ECONOMY, new SeatsInfo(144, 4000f));
 
         carrierList.add(new Carrier(CarrierType.BOEING777,travelClassMapBoeing));
         carrierList.add(new Carrier(CarrierType.AIRBUS321,travelClassMap321));
@@ -61,7 +62,7 @@ public class CarrierDataLoader {
             BufferedReader br = new BufferedReader(new FileReader(file));
 
             while ((line = br.readLine()) != null) {
-                Map <TravelClass, Integer> seatsPerClass = new HashMap<>();
+                Map<TravelClass, SeatsInfo> seatsPerClass = new HashMap<>();
                 // use comma as separator
                 //IgnoreLinesstarting with ##
                 if (line.startsWith("#"))
@@ -72,15 +73,22 @@ public class CarrierDataLoader {
                 Boolean hasBusinessClass = Boolean.parseBoolean(carrierData[2]);
                 Boolean hasEconomyClass = Boolean.parseBoolean(carrierData[3]);
                 seatsPerClass.clear();
-                int seatsForFirst = Integer.parseInt(carrierData[4]);
-                int seatsForBusiness = Integer.parseInt(carrierData[5]);
-                int seatsForEconomy = Integer.parseInt(carrierData[6]);
+                int allocatedSeatsForFirst = Integer.parseInt(carrierData[4]);
+                int allocatedSeatsForBusiness = Integer.parseInt(carrierData[5]);
+                int allocatedSeatsForEconomy = Integer.parseInt(carrierData[6]);
+                Float priceOfFirstSeat = Float.parseFloat(carrierData[7]);
+                Float priceOfBusinessSeat = Float.parseFloat(carrierData[8]);
+                Float priceOfEconomySeat = Float.parseFloat(carrierData[9]);
+
                 if (hasFirstClass)
-                    seatsPerClass.putIfAbsent(TravelClass.FIRST,seatsForFirst);
+                    seatsPerClass.putIfAbsent(TravelClass.FIRST,
+                            new SeatsInfo(allocatedSeatsForFirst,priceOfFirstSeat));
                 if (hasBusinessClass)
-                    seatsPerClass.putIfAbsent(TravelClass.BUSINESS,seatsForBusiness);
+                    seatsPerClass.putIfAbsent(TravelClass.BUSINESS,
+                            new SeatsInfo(allocatedSeatsForBusiness,priceOfBusinessSeat));
                 if (hasEconomyClass)
-                    seatsPerClass.putIfAbsent(TravelClass.ECONOMY,seatsForEconomy);
+                    seatsPerClass.putIfAbsent(TravelClass.ECONOMY,
+                            new SeatsInfo(allocatedSeatsForEconomy,priceOfEconomySeat));
                 carrierList.add (new Carrier(carrierType,seatsPerClass));
 
             }

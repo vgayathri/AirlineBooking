@@ -83,6 +83,8 @@ public class Flight {
         return getDepartureDate().equals(giveDate);
     }
 
+    public Carrier getCarrierDetails() { return carrierDetails;}
+
     public void setCarrierDetails(Carrier carrierModel) {
         this.carrierDetails = carrierModel;
     }
@@ -92,7 +94,17 @@ public class Flight {
     }
 
     public int getNoOfSeatsForTravelClass(TravelClass travelClass) {
-        return carrierDetails.getSeatsForClass(travelClass);
+        return carrierDetails.getAllocatedSeatsForClass(travelClass);
     }
+    public int getNoOfAvailableSeatsForTravelClass(TravelClass travelClass) {
+        return carrierDetails.getAvailableSeatsForClass(travelClass);
+    }
+
+    public float getBasePriceForATravelClass(TravelClass travelClass) {
+        float basePrice  = carrierDetails.getBasePriceForTraveClass(travelClass);
+        return basePrice;
+
+    }
+
 
 }

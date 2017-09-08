@@ -7,15 +7,14 @@
 <body>
 <p th:text = "'Welcome to TWAirline'"/>
 <h1>Search Results</h1>
- <table border="1" style="width:300px">
+<div>
+    <table border="1" style="float:left">
     <tr>
         <th>FlightID</th>
         <th>CarrierType</th>
         <th>Source</th>
         <th>Destination</th>
         <th>Departure Date</th>
-
-
 
     </tr>
     <tr th:each="flightInfo:${flights}">
@@ -24,10 +23,14 @@
         <td th:text="${flightInfo.getSource()}"></td>
         <td th:text="${flightInfo.getDestination()}"></td>
         <td th:text="${flightInfo.getDepartureDate()}"></td>
-
-
     </tr>
-</table>
-
+    </table>
+    <table border="1" style="float:left">
+      <th>Cost(INR)</th>
+       <tr th:each="price:${prices}">
+         <td th:text="${price}"></td>
+      </tr>
+    </table>
+</div>
 </body>
 </html>
