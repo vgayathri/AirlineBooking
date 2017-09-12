@@ -9,6 +9,7 @@ import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 
+import java.time.DayOfWeek;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -99,20 +100,20 @@ public class CarrierTest {
     @Test
     public void testAirBus321HasBasePriceForEconomySeat() {
         Carrier testCarrier = getTestCarrier(CarrierType.AIRBUS321);
-        float basePriceForEconomy = testCarrier.getBasePriceForTraveClass(TravelClass.ECONOMY);
+        float basePriceForEconomy = testCarrier.getBasePriceForTraveClass(TravelClass.ECONOMY, DayOfWeek.SUNDAY);
          Assert.assertEquals(5000.0f,basePriceForEconomy,0.0);
     }
     @Test
     public void testAirBus321HasBasePriceForBusinessSeat() {
         Carrier testCarrier = getTestCarrier(CarrierType.AIRBUS321);
-        float basePriceForBusiness = testCarrier.getBasePriceForTraveClass(TravelClass.BUSINESS);
+        float basePriceForBusiness = testCarrier.getBasePriceForTraveClass(TravelClass.BUSINESS,DayOfWeek.MONDAY);
         Assert.assertEquals(10000.0f,basePriceForBusiness,0.0);
     }
     @Test
     public void testAirBus321BasePriceForBusinessSeatMoreThanForExconomySeat() {
         Carrier testCarrier = getTestCarrier(CarrierType.AIRBUS321);
-        float basePriceForBusiness = testCarrier.getBasePriceForTraveClass(TravelClass.BUSINESS);
-        float basePriceForEconomy = testCarrier.getBasePriceForTraveClass(TravelClass.ECONOMY);
+        float basePriceForBusiness = testCarrier.getBasePriceForTraveClass(TravelClass.BUSINESS,DayOfWeek.TUESDAY);
+        float basePriceForEconomy = testCarrier.getBasePriceForTraveClass(TravelClass.ECONOMY,DayOfWeek.TUESDAY );
         Assert.assertTrue(basePriceForBusiness>basePriceForEconomy);
     }
 
@@ -120,54 +121,54 @@ public class CarrierTest {
     public void testAirBus321DoesNotHaveBasePriceForFirstSeat()
     {
         Carrier testCarrier = getTestCarrier(CarrierType.AIRBUS321);
-        float basePriceForFirst = testCarrier.getBasePriceForTraveClass(TravelClass.FIRST);
+        float basePriceForFirst = testCarrier.getBasePriceForTraveClass(TravelClass.FIRST, DayOfWeek.TUESDAY);
         Assert.assertEquals(0,basePriceForFirst,0.0);
     }
     @Test
     public void testAirBus19HasBasePriceForEconomySeat() {
         Carrier testCarrier = getTestCarrier(CarrierType.AIRBUS319V2);
-        float basePriceForEconomy = testCarrier.getBasePriceForTraveClass(TravelClass.ECONOMY);
+        float basePriceForEconomy = testCarrier.getBasePriceForTraveClass(TravelClass.ECONOMY,DayOfWeek.WEDNESDAY);
         Assert.assertEquals(4000.0f,basePriceForEconomy,0.0);
     }
     @Test
     public void testAirBus319HaNosBasePriceForBusinessSeat() {
         Carrier testCarrier = getTestCarrier(CarrierType.AIRBUS319V2);
-        float basePriceForBusiness = testCarrier.getBasePriceForTraveClass(TravelClass.BUSINESS);
+        float basePriceForBusiness = testCarrier.getBasePriceForTraveClass(TravelClass.BUSINESS,DayOfWeek.THURSDAY);
         Assert.assertEquals(0.0f,basePriceForBusiness,0.0);
     }
     @Test
     public void testAirBus319DoesNotHaveBasePriceForFirstSeat()
     {
         Carrier testCarrier = getTestCarrier(CarrierType.AIRBUS319V2);
-        float basePriceForFirst = testCarrier.getBasePriceForTraveClass(TravelClass.FIRST);
+        float basePriceForFirst = testCarrier.getBasePriceForTraveClass(TravelClass.FIRST,DayOfWeek.FRIDAY);
         Assert.assertEquals(0,basePriceForFirst,0.0);
     }
     @Test
     public void testBoeingHasBasePriceForEconomySeat() {
         Carrier testCarrier = getTestCarrier(CarrierType.BOEING777);
-        float basePriceForEconomy = testCarrier.getBasePriceForTraveClass(TravelClass.ECONOMY);
+        float basePriceForEconomy = testCarrier.getBasePriceForTraveClass(TravelClass.ECONOMY,DayOfWeek.SATURDAY);
         Assert.assertEquals(6000.0f,basePriceForEconomy,0.0);
     }
     @Test
     public void testBoeingHaNosBasePriceForBusinessSeat() {
         Carrier testCarrier = getTestCarrier(CarrierType.BOEING777);
-        float basePriceForBusiness = testCarrier.getBasePriceForTraveClass(TravelClass.BUSINESS);
+        float basePriceForBusiness = testCarrier.getBasePriceForTraveClass(TravelClass.BUSINESS,DayOfWeek.SUNDAY);
         Assert.assertEquals(13000.0f,basePriceForBusiness,0.0);
     }
     @Test
     public void testBoeingHasBasePriceForFirstSeat()
     {
         Carrier testCarrier = getTestCarrier(CarrierType.BOEING777);
-        float basePriceForFirst = testCarrier.getBasePriceForTraveClass(TravelClass.FIRST);
+        float basePriceForFirst = testCarrier.getBasePriceForTraveClass(TravelClass.FIRST,DayOfWeek.MONDAY);
         Assert.assertEquals(20000.0f,basePriceForFirst,0.0);
     }
     @Test
     public void testBoeingHasBasePricesForHigherClassMoreThanLowerClass()
     {
         Carrier testCarrier = getTestCarrier(CarrierType.BOEING777);
-        float basePriceForFirst = testCarrier.getBasePriceForTraveClass(TravelClass.FIRST);
-        float basePriceForEconomy = testCarrier.getBasePriceForTraveClass(TravelClass.ECONOMY);
-        float basePriceForBusiness = testCarrier.getBasePriceForTraveClass(TravelClass.BUSINESS);
+        float basePriceForFirst = testCarrier.getBasePriceForTraveClass(TravelClass.FIRST,DayOfWeek.SUNDAY);
+        float basePriceForEconomy = testCarrier.getBasePriceForTraveClass(TravelClass.ECONOMY,DayOfWeek.MONDAY);
+        float basePriceForBusiness = testCarrier.getBasePriceForTraveClass(TravelClass.BUSINESS,DayOfWeek.TUESDAY);
 
         Assert.assertTrue(basePriceForFirst > basePriceForBusiness && basePriceForBusiness > basePriceForEconomy);
     }
@@ -175,7 +176,7 @@ public class CarrierTest {
     @Test
     public void testSeatsReturnsAllocatedSeats()
     {
-        int noOfAllocatedSeats = testSeatInfo.getNoOfAllocatedSeats();
+        int noOfAllocatedSeats = testSeatInfo.getTotalNoOfSeats();
         Assert.assertTrue(noOfAllocatedSeats > 0);
     }
 
@@ -190,7 +191,7 @@ public class CarrierTest {
     @Test
     public void testSeatsReturnsAvailableSeats()
     {
-        int noOfAllocatedSeats = testSeatInfo.getNoOfAllocatedSeats();
+        int noOfAllocatedSeats = testSeatInfo.getTotalNoOfSeats();
         int noOfSeatsBooked = testSeatInfo.getNoOfSeatsBooked();
         int noOfAvlbSeats = testSeatInfo.getNoOfSeatsAvlb();
         Assert.assertEquals(noOfAllocatedSeats-noOfSeatsBooked, noOfAvlbSeats);

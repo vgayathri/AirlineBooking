@@ -1,11 +1,9 @@
 package airline.model;
 
-import com.sun.deploy.security.ValidationState;
 import org.hibernate.validator.constraints.NotEmpty;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import java.time.LocalDate;
-import java.time.format.DateTimeFormatter;
 
 /**
  * Created by Gayathri on 31/08/17.

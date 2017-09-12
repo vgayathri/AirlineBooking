@@ -48,16 +48,12 @@ public  class FlightController {
     @DateTimeFormat(pattern="d/MM/yyyy")
     public String searchByPassengerSubmit(@ModelAttribute(value="searchObj")SearchCriteria searchCriteria, BindingResult bindingResult, Model model) {
 
-        try {
-           if (searchCriteria.getNoOfPassengers() == 0)
-               searchCriteria.setNoOfPassengers(1);
-           } catch (NullPointerException e) {
-            searchCriteria.setNoOfPassengers(1);
-        }
+        boolean showResults = true;
         List<Flight> resultSet = flightServiceHandler.searchForFlights(searchCriteria);
         model.addAttribute("flights",resultSet);
         List <Float> priceList = flightServiceHandler.calculateBasePriceForSeatsForFlightList(resultSet,searchCriteria);
         model.addAttribute("prices",priceList);
-        return "SearchResult";
+        model.addAttribute("showResults",showResults);
+        return "flightSearch";
     }
 }

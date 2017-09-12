@@ -34,7 +34,6 @@ public class FlightServiceHandler {
         carrierListLoader =  new CarrierDataLoader();
         flightListLoader =  new FlightDataLoader();
         populateFlightnCarrierLists();
-        /*Associate a carrier to a flight */
     }
 
     /**
@@ -124,7 +123,7 @@ public class FlightServiceHandler {
         for (Flight flight:filteredFlights
              ) {
             Float costOfSeats = flight.getBasePriceForATravelClass(classOfTravel) * noOfPassengers;
-            costOfSeatsList.add(costOfSeats);
+            costOfSeatsList.add(Float.parseFloat(String.format("%.2f",costOfSeats)));
         }
         return costOfSeatsList;
     }

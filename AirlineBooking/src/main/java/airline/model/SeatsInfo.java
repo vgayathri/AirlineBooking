@@ -4,28 +4,28 @@ package airline.model;
  * Created by Gayathri on 07/09/17.
  */
 public class SeatsInfo {
-    Integer noOfAllocatedSeats;
-    Integer noOfSeatsBooked;
-    Float basePricePerSeat;
+    private Integer totalNoOfSeats;
+    private Integer noOfSeatsBooked;
+    private Float basePricePerSeat;
 
     public SeatsInfo(Integer noOfAllocatedSeats, Integer noOfSeatsBooked, Float basePricePerSeat) {
-        this.noOfAllocatedSeats = noOfAllocatedSeats;
+        this.totalNoOfSeats = noOfAllocatedSeats;
         this.noOfSeatsBooked = noOfSeatsBooked;
         this.basePricePerSeat = basePricePerSeat;
     }
 
     public SeatsInfo(Integer noOfAllocatedSeats, Float basePricePerSeat) {
-        this.noOfAllocatedSeats = noOfAllocatedSeats;
+        this.totalNoOfSeats = noOfAllocatedSeats;
         this.noOfSeatsBooked = 0;
         this.basePricePerSeat = basePricePerSeat;
     }
 
-    public Integer getNoOfAllocatedSeats() {
-        return noOfAllocatedSeats;
+    public Integer getTotalNoOfSeats() {
+        return totalNoOfSeats;
     }
 
-    public void setNoOfAllocatedSeats(Integer noOfAllocatedSeats) {
-        this.noOfAllocatedSeats = noOfAllocatedSeats;
+    public void setTotalNoOfSeats(Integer totalNoOfSeats) {
+        this.totalNoOfSeats = totalNoOfSeats;
     }
 
     public Integer getNoOfSeatsBooked() {
@@ -44,12 +44,15 @@ public class SeatsInfo {
         this.basePricePerSeat = basePricePerSeat;
     }
     public Integer getNoOfSeatsAvlb() {
-        return noOfAllocatedSeats - noOfSeatsBooked;
+        return totalNoOfSeats - noOfSeatsBooked;
     }
 
     public Float calculatePriceofSeats(Integer noOfSeats) {
-        return basePricePerSeat * noOfSeats;
+        return (basePricePerSeat * noOfSeats);
     }
 
+    public float getPercentageOfSeatsOccuped() {
+        return (noOfSeatsBooked*100/totalNoOfSeats);
+    }
 
 }

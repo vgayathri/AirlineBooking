@@ -1,9 +1,9 @@
 package airline.repositories;
 
 import airline.model.Carrier;
+import airline.model.CarrierType;
 import airline.model.SeatsInfo;
 import airline.model.TravelClass;
-import airline.model.CarrierType;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.stereotype.Repository;
 
@@ -21,7 +21,7 @@ import java.util.Map;
  */
 @Repository
 public class CarrierDataLoader {
-    List <Carrier> carrierList = new ArrayList<>();
+    private List <Carrier> carrierList = new ArrayList<>();
 
     public CarrierDataLoader () {
         createCarrierList();
@@ -32,25 +32,31 @@ public class CarrierDataLoader {
 
     public void createCarrierList() {
 
-
+        /*Boeing 777 has all three classes of travel*/
         final Map<TravelClass, SeatsInfo> travelClassMapBoeing = new HashMap<TravelClass, SeatsInfo>();
         travelClassMapBoeing.put(TravelClass.FIRST, new SeatsInfo(8,20000f));
         travelClassMapBoeing.put(TravelClass.BUSINESS, new SeatsInfo(35,13000f));
-        travelClassMapBoeing.put(TravelClass.ECONOMY,new SeatsInfo (195,6000f));
+        travelClassMapBoeing.put(TravelClass.ECONOMY,new SeatsInfo (195,100,6000f));
 
-
+        /*Airbus 321 does not support first class*/
         final Map<TravelClass, SeatsInfo> travelClassMap321 = new HashMap<TravelClass, SeatsInfo>();
         travelClassMap321.put(TravelClass.BUSINESS, new SeatsInfo(20,10000f));
-        travelClassMap321.put(TravelClass.ECONOMY,new SeatsInfo(152,5000f));
+        travelClassMap321.put(TravelClass.ECONOMY,new SeatsInfo(152, 20,5000f));
 
+        /*Airbus 319 supports only economy class*/
         final Map<TravelClass, SeatsInfo> travelClassMap319v2 = new HashMap<TravelClass, SeatsInfo>();
-        travelClassMap319v2.put(TravelClass.ECONOMY, new SeatsInfo(144, 4000f));
+        travelClassMap319v2.put(TravelClass.ECONOMY, new SeatsInfo(144,140, 4000f));
 
         carrierList.add(new Carrier(CarrierType.BOEING777,travelClassMapBoeing));
         carrierList.add(new Carrier(CarrierType.AIRBUS321,travelClassMap321));
         carrierList.add(new Carrier(CarrierType.AIRBUS319V2,travelClassMap319v2));
 
     }
+
+    /**
+     * Read from CSV File being supported when many flights
+     * need to be instantiated
+     **/
 
     public void populateFromCSVFile(String fileName) {
 
@@ -63,8 +69,11 @@ public class CarrierDataLoader {
 
             while ((line = br.readLine()) != null) {
                 Map<TravelClass, SeatsInfo> seatsPerClass = new HashMap<>();
-                // use comma as separator
-                //IgnoreLinesstarting with ##
+                /*
+                 * Use comma as separator
+                 * IgnoreLinesstarting with ##
+                 */
+
                 if (line.startsWith("#"))
                     continue;
                 String[] carrierData = line.split(cvsSplitBy);
@@ -80,15 +89,18 @@ public class CarrierDataLoader {
                 Float priceOfBusinessSeat = Float.parseFloat(carrierData[8]);
                 Float priceOfEconomySeat = Float.parseFloat(carrierData[9]);
 
-                if (hasFirstClass)
+                if (hasFirstClass) {
                     seatsPerClass.putIfAbsent(TravelClass.FIRST,
-                            new SeatsInfo(allocatedSeatsForFirst,priceOfFirstSeat));
-                if (hasBusinessClass)
+                            new SeatsInfo(allocatedSeatsForFirst, priceOfFirstSeat));
+                }
+                    if (hasBusinessClass) {
                     seatsPerClass.putIfAbsent(TravelClass.BUSINESS,
-                            new SeatsInfo(allocatedSeatsForBusiness,priceOfBusinessSeat));
-                if (hasEconomyClass)
+                            new SeatsInfo(allocatedSeatsForBusiness, priceOfBusinessSeat));
+                }
+                if (hasEconomyClass) {
                     seatsPerClass.putIfAbsent(TravelClass.ECONOMY,
-                            new SeatsInfo(allocatedSeatsForEconomy,priceOfEconomySeat));
+                            new SeatsInfo(allocatedSeatsForEconomy, priceOfEconomySeat));
+                }
                 carrierList.add (new Carrier(carrierType,seatsPerClass));
 
             }
@@ -97,9 +109,7 @@ public class CarrierDataLoader {
         }
 
     }
-
     public List <Carrier> getCarrierList() {
         return carrierList;
     }
-
 }

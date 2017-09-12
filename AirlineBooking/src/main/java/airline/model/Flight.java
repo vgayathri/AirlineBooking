@@ -1,9 +1,12 @@
 package airline.model;
 
+import org.apache.tomcat.jni.Local;
 import org.springframework.format.annotation.DateTimeFormat;
+import org.springframework.format.annotation.NumberFormat;
 
+import java.text.DecimalFormat;
 import java.time.LocalDate;
-import java.util.Date;
+import java.time.format.DecimalStyle;
 
 /**
  * Created by Gayathri on 30/08/17.
@@ -101,7 +104,9 @@ public class Flight {
     }
 
     public float getBasePriceForATravelClass(TravelClass travelClass) {
-        float basePrice  = carrierDetails.getBasePriceForTraveClass(travelClass);
+        DecimalFormat decimalFormat = new DecimalFormat();
+        decimalFormat.setMaximumFractionDigits(3);
+        float basePrice  = carrierDetails.getBasePriceForTraveClass(travelClass, getDepartureDate().getDayOfWeek());;
         return basePrice;
 
     }
