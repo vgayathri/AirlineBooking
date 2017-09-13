@@ -32,7 +32,7 @@ public class FlightDataLoader {
     public void createFlightList() {
 
         LocalDate todaysDate = LocalDate.now();
-        LocalDate nextDate = todaysDate.plusDays(2);
+        LocalDate nextDate = todaysDate.plusDays(1);
         listOfFlights.add(new Flight("FL101","Source1","Dest1",todaysDate));
         listOfFlights.add(new Flight("FL102","Source1","Dest1",nextDate));
         listOfFlights.add(new Flight("FL203","Source2","Dest2",todaysDate));

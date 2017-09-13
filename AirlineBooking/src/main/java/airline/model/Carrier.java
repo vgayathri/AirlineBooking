@@ -1,6 +1,9 @@
 package airline.model;
 
+import org.apache.tomcat.jni.Local;
+
 import java.time.DayOfWeek;
+import java.time.LocalDate;
 import java.util.Map;
 
 /**
@@ -45,7 +48,7 @@ public class Carrier {
     }
 
 
-    public Float getBasePriceForTraveClass(TravelClass classType, DayOfWeek departureDayOfWeek) {
+    public Float getBasePriceForTraveClass(TravelClass classType, LocalDate departureDate) {
         if (!mapOfTravelClassToSeatsInfo.containsKey(classType))
             return 0.0f;
         float basePriceForClass = mapOfTravelClassToSeatsInfo.get(classType).getBasePricePerSeat();
@@ -55,9 +58,11 @@ public class Carrier {
                 markedUpPrice = getMarkedUpEconomyClassPrices(basePriceForClass);
                 break;
             case BUSINESS:
-                markedUpPrice = getMarkedUpBusinessClassPrices(basePriceForClass,departureDayOfWeek);
+                markedUpPrice = getMarkedUpBusinessClassPrices(basePriceForClass,departureDate);
                 break;
-
+            case FIRST:
+                markedUpPrice = getMarkedUpFirstClassPrices(basePriceForClass,departureDate);
+                break;
             default:
                 markedUpPrice = basePriceForClass;
                 break;
@@ -77,13 +82,25 @@ public class Carrier {
             return economyBasePrice * 1.6f;
     }
 
-    public float getMarkedUpBusinessClassPrices(float businessBasePrice, DayOfWeek dayOfDepart) {
+    public float getMarkedUpBusinessClassPrices(float businessBasePrice, LocalDate dateOfDepart) {
+        DayOfWeek dayOfDepart = dateOfDepart.getDayOfWeek();
         if (dayOfDepart == DayOfWeek.MONDAY || dayOfDepart==DayOfWeek.FRIDAY || dayOfDepart == DayOfWeek.SUNDAY) {
             return businessBasePrice * 1.40f;
         } else {
             return businessBasePrice;
         }
     }
+
+    public float getMarkedUpFirstClassPrices(float firstClassBasePrice, LocalDate departDate) {
+        final int preBookingWindowInDays=10;
+        LocalDate todaysDate = LocalDate.now();
+        int differenceInDates = departDate.compareTo(todaysDate);
+        System.out.println(differenceInDates);
+        float markUpRate = 1.0f+(float)(preBookingWindowInDays - differenceInDates)/preBookingWindowInDays;
+        System.out.println("BusinessClass markupRate" + markUpRate);
+        return firstClassBasePrice * markUpRate;
+    }
+
 
 
     public CarrierType getCarrierType() {

@@ -105,8 +105,8 @@ public class Flight {
 
     public float getBasePriceForATravelClass(TravelClass travelClass) {
         DecimalFormat decimalFormat = new DecimalFormat();
-        decimalFormat.setMaximumFractionDigits(3);
-        float basePrice  = carrierDetails.getBasePriceForTraveClass(travelClass, getDepartureDate().getDayOfWeek());;
+        decimalFormat.setMaximumFractionDigits(2);
+        float basePrice  = carrierDetails.getBasePriceForTraveClass(travelClass,getDepartureDate());
         return basePrice;
 
     }
