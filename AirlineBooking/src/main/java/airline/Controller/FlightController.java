@@ -30,27 +30,25 @@ import javax.annotation.PostConstruct;
 @SpringBootApplication
 public  class FlightController {
 
-    List <String> srcCities = new ArrayList<>();
-    List <String> dstCities = new ArrayList<>();
-
-    
-
-
     @Autowired
     protected FlightServiceHandler flightServiceHandler;
 
-    @PostConstruct
+    List <String> srcCities = new ArrayList<>();
+    List <String> dstCities = new ArrayList<>();
 
+    @PostConstruct
+    public void postContructor() {
+        srcCities = flightServiceHandler.getAllSourceLocations();
+        dstCities = flightServiceHandler.getAllDestLocations();
+}
 
     @RequestMapping(value="/")
     public String welcomeMessage(Model newModel) {
-        List <String> srcCities = flightServiceHandler.getAllSourceLocations();
-        List <String> dstCities = flightServiceHandler.getAllDestLocations();
+
         newModel.addAttribute("Sources", srcCities);
         newModel.addAttribute("Destinations",dstCities);
-        newModel.addAttribute("searchObj", new SearchCriteria());
         newModel.addAttribute("TravelClass", TravelClass.values());
-        newModel.addAttribute("CarrierType", CarrierType.values());
+        newModel.addAttribute("searchObj", new SearchCriteria());
 
         return "flightSearch";
     }
@@ -58,7 +56,9 @@ public  class FlightController {
     @PostMapping(value="/searchFlight")
     @DateTimeFormat(pattern="d/MM/yyyy")
     public String searchByPassengerSubmit(@ModelAttribute(value="searchObj")SearchCriteria searchCriteria, BindingResult bindingResult, Model model) {
-
+        model.addAttribute("Sources", srcCities);
+        model.addAttribute("Destinations",dstCities);
+        model.addAttribute("TravelClass", TravelClass.values());
         boolean showResults = true;
         List<Flight> resultSet = flightServiceHandler.searchForFlights(searchCriteria);
         model.addAttribute("flights",resultSet);
