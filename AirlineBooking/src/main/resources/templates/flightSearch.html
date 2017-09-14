@@ -3,6 +3,15 @@
 <head>
     <title>Getting Started Serving Web Content</title>
     <link href="//cdn.muicss.com/mui-0.9.25/css/mui.min.css" rel="stylesheet" type="text/css" />
+    <style>
+        input.cent-width {
+            width:100%;
+        }
+
+        input.mui-btn.mui-btn--danger.centered-btn {
+            margin-left: 100px;
+        }
+    </style>
     <script src="//cdn.muicss.com/mui-0.9.25/js/mui.min.js"></script>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
     <script type="text/javascript">
@@ -31,83 +40,91 @@
     </script>
 </head>
 <body>
-<div class="mui-appbar">
-    <div class="mui--text-display2">TW Airlines</div>
-</div>
-<div class="mui-form">
-    <form action="#" th:action="@{/searchFlight}" th:object="${searchObj}" method="post">
-        <div class="mui-select mui-col-xs-6">
-            <label>From:</label>
-            <select id="source" name="source" th:field="*{source}" th:required="required" >
-                <option value="">Select Origin</option>
-                <option th:each="city : ${Sources}"
-                        th:value="${city}"
-                        th:text="${city}"></option>
-            </select>
-        </div>
-        <div class="mui-select mui-col-xs-6">
-            <label>To:</label>
-            <select class="mui-select" id="destination" name="destination" th:field="*{destination}" th:required="required">
-                <option value="">Select Destination</option>
-                <option th:each="city : ${Destinations}"
-                        th:value="${city}"
-                        th:text="${city}">
-                </option>
-            </select>
-        </div>
-        <br></br>
-        <div class="mui-col-xs-3">
-            <input  placeholder="No Of Passengers" type="number" id="noOfPassengers" th:field="*{noOfPassengers}" min="0"/>
-        </div>
-        <div class="mui-col-xs-3">
-            Depart Date
-            <input type="date" th:field="*{departureDateStr}" th:id="departureDateStr"
-                   th:value="*{departureDateStr}"/><span id="error" style="color: red"></span>
-        </div>
-        <div class="mui-col-xs-3">
-            <select class="mui-select" id="travelClass"
-                    name="travelClass" th:field="*{travelClass}" th:required="required">
-                <option value="">Select Class of Travel</option>
-                <option th:each="serviceClass : ${TravelClass}"
-                        th:value="${serviceClass}"
-                        th:text="${serviceClass}">
-                </option>
-            </select>
-        </div>
-        <div class="mui-col-xs-3">
-            <input class="mui-btn mui-btn--danger small" type="submit" value="Search" onclick="return validate();"/>
-        </div>
-    </form>
-</div>
+<div class="mui-container">
+    <div class="mui-appbar">
+        <div class="mui--text-display2">TW Airlines</div>
+    </div>
+    <div class="mui-form">
+        <form action="#" th:action="@{/searchFlight}" th:object="${searchObj}" method="post">
+            <div class="mui-row">
+                <div class="mui-select mui-col-xs-4">
+                    <select id="source" name="source" th:field="*{source}" th:required="required" >
+                        <option value="">Select Origin</option>
+                        <option th:each="city : ${Sources}"
+                                th:value="${city}"
+                                th:text="${city}"></option>
+                    </select>
+                    <label>From:</label>
+                </div>
+                <div class="mui-select mui-col-xs-4">
+
+                    <select class="mui-select" id="destination" name="destination" th:field="*{destination}" th:required="required">
+                        <option value="">Select Destination</option>
+                        <option th:each="city : ${Destinations}"
+                                th:value="${city}"
+                                th:text="${city}">
+                        </option>
+                    </select>
+                    <label>To:</label>
+                </div>
+                <div class="mui-select mui-col-xs-4">
+                    <label>Travel Class:</label>
+                    <select class="mui-select" id="travelClass"
+                            name="travelClass" th:field="*{travelClass}" th:required="required">
+                        <option value="">Select Class of Travel</option>
+                        <option th:each="serviceClass : ${TravelClass}"
+                                th:value="${serviceClass}"
+                                th:text="${serviceClass}">
+                        </option>
+                    </select>
+                </div>
+            </div>
+            <div class="mui-row">
+                <div class="mui-textfeild mui-col-xs-4">
+                    <input  placeholder="Passengers" class="cent-width" type="number" id="noOfPassengers" th:field="*{noOfPassengers}" min="0"/>
+                </div>
+                <div class="mui-textfeild mui-col-xs-4">
+                    <input type="date" th:field="*{departureDateStr}" class="cent-width" th:id="departureDateStr"
+                           th:value="*{departureDateStr}"/>
+                    <span id="error" style="color: red"></span>
+                </div>
+
+                <div class="mui-col-xs-4">
+                    <input class="mui-btn mui-btn--danger centered-btn" type="submit" value="Search" onclick="return validate();"/>
+                </div>
+            </div>
+        </form>
+    </div>
 
 
-<div th:id="results" th:if="${showResults}==true" >
-    <p th:text="${#lists.size(flights) + ' flight(s) found'}" style="font-size:medium"></p>
+    <div th:id="results" th:if="${showResults}==true" >
+        <p th:text="${#lists.size(flights) + ' flight(s) found'}" style="font-size:medium"></p>
 
-    <div th:if="${not #lists.isEmpty(flights)}" style="overflow-x:auto">
-        <br></br>
-        <table style="float:left" border="1" >
-            <tr>
-                <th>FlightID</th>
-                <th>CarrierType</th>
-                <th>Source</th>
-                <th>Destination</th>
-                <th>Departure Date</th>
-            </tr>
-            <tr th:each="flightInfo:${flights}">
-                <td th:text="${flightInfo.getFlightID()}"></td>
-                <td th:text="${flightInfo.getTypeOfCarrier()}"></td>
-                <td th:text="${flightInfo.getSource()}"></td>
-                <td th:text="${flightInfo.getDestination()}"></td>
-                <td th:text="${flightInfo.getDepartureDate()}"></td>
-            </tr>
-        </table>
-        <table style="float:left" border="1">
-            <th>Cost(INR)</th>
-            <tr th:each="price:${prices}">
-                <td th:text="${price}"></td>
-            </tr>
-        </table>
+        <div th:if="${not #lists.isEmpty(flights)}" style="overflow-x:auto">
+            <br></br>
+            <table class="mui-table mui-table--bordered">
+                <thead>
+                    <tr >
+                        <th class="mui--align-middle">FlightID</th>
+                        <th class="mui--align-middle">CarrierType</th>
+                        <th class="mui--align-middle">Source</th>
+                        <th class="mui--align-middle">Destination</th>
+                        <th class="mui--align-middle" >Departure Date</th>
+                        <th class="mui--align-middle">Cost(INR)</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr th:each="flightInfo:${flights}">
+                        <td class="mui--align-middle" th:text="${flightInfo.getFlightID()}"></td>
+                        <td class="mui--align-middle" th:text="${flightInfo.getTypeOfCarrier()}"></td>
+                        <td class="mui--align-middle" th:text="${flightInfo.getSource()}"></td>
+                        <td class="mui--align-middle" th:text="${flightInfo.getDestination()}"></td>
+                        <td class="mui--align-middle" th:text="${flightInfo.getDepartureDate()}"></td>
+                        <td class="mui--align-middle" th:text="${prices.get(flightInfo.flightID)}"></td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
     </div>
 </div>
 </body>

@@ -17,7 +17,11 @@ import org.springframework.web.bind.annotation.*;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Map;
+
 import airline.repositories.*;
+
+import javax.annotation.PostConstruct;
 
 /**
  * Modifed by Gayathri on 8/8/17.
@@ -26,10 +30,17 @@ import airline.repositories.*;
 @SpringBootApplication
 public  class FlightController {
 
-    String flightInfoFileName="FlightDetails.txt";
+    List <String> srcCities = new ArrayList<>();
+    List <String> dstCities = new ArrayList<>();
+
+    
+
 
     @Autowired
     protected FlightServiceHandler flightServiceHandler;
+
+    @PostConstruct
+
 
     @RequestMapping(value="/")
     public String welcomeMessage(Model newModel) {
@@ -51,8 +62,8 @@ public  class FlightController {
         boolean showResults = true;
         List<Flight> resultSet = flightServiceHandler.searchForFlights(searchCriteria);
         model.addAttribute("flights",resultSet);
-        List <Float> priceList = flightServiceHandler.calculateBasePriceForSeatsForFlightList(resultSet,searchCriteria);
-        model.addAttribute("prices",priceList);
+        Map<String, Float> flightToPriceMap = flightServiceHandler.calculateBasePriceForSeatsForFlightList(resultSet,searchCriteria);
+        model.addAttribute("prices",flightToPriceMap);
         model.addAttribute("showResults",showResults);
         return "flightSearch";
     }

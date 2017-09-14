@@ -10,7 +10,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.function.Predicate;
 import java.util.stream.Collector;
 import java.util.stream.Collectors;
@@ -116,16 +118,16 @@ public class FlightServiceHandler {
 
     }
 
-    public List<Float> calculateBasePriceForSeatsForFlightList(List<Flight> filteredFlights, SearchCriteria searchCriteria) {
+    public Map<String, Float> calculateBasePriceForSeatsForFlightList(List<Flight> filteredFlights, SearchCriteria searchCriteria) {
         int noOfPassengers = searchCriteria.getNoOfPassengers();
         TravelClass classOfTravel = searchCriteria.getTravelClass();
-        List <Float> costOfSeatsList =  new ArrayList<Float>();
+        Map <String,Float> mapOfFlightToPrice =  new HashMap<String, Float>();
         for (Flight flight:filteredFlights
              ) {
             Float costOfSeats = flight.getBasePriceForATravelClass(classOfTravel) * noOfPassengers;
-            costOfSeatsList.add(Float.parseFloat(String.format("%.2f",costOfSeats)));
+            mapOfFlightToPrice.putIfAbsent(flight.getFlightID(),Float.parseFloat(String.format("%.2f",costOfSeats)));
         }
-        return costOfSeatsList;
+        return mapOfFlightToPrice;
     }
 
 }

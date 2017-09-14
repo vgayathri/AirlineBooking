@@ -205,9 +205,7 @@ public class TestFlights {
         testSearchCriteria.setNoOfPassengers(20);
         List<Flight> listAllMatchingFlights = testServiceHandler.
                 searchForFlights(testSearchCriteria);
-        List <Float> listOfPrices = testServiceHandler.calculateBasePriceForSeatsForFlightList(listAllMatchingFlights,testSearchCriteria);
-        listOfPrices.stream()
-                .forEach(System.out::println);
+        Map <String, Float> mapOfPrices = testServiceHandler.calculateBasePriceForSeatsForFlightList(listAllMatchingFlights,testSearchCriteria);
         //how do I assert here
 
     }
@@ -219,9 +217,9 @@ public class TestFlights {
         testSearchCriteria.setTravelClass(TravelClass.FIRST);
         List<Flight> listAllMatchingFlights = testServiceHandler.
                 searchForFlights(testSearchCriteria);
-        List <Float> listOfPrices = testServiceHandler.calculateBasePriceForSeatsForFlightList(listAllMatchingFlights,testSearchCriteria);
-        listOfPrices.stream()
-                .forEach(System.out::println);
+        //List <Float> listOfPrices = testServiceHandler.calculateBasePriceForSeatsForFlightList(listAllMatchingFlights,testSearchCriteria);
+        //listOfPrices.stream()
+          //      .forEach(System.out::println);
     }
 }
 
