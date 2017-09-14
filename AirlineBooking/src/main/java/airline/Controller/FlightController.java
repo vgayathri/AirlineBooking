@@ -40,7 +40,7 @@ public  class FlightController {
     public void postContructor() {
         srcCities = flightServiceHandler.getAllSourceLocations();
         dstCities = flightServiceHandler.getAllDestLocations();
-}
+    }
 
     @RequestMapping(value="/")
     public String welcomeMessage(Model newModel) {

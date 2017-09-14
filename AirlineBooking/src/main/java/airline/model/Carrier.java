@@ -4,6 +4,8 @@ import org.apache.tomcat.jni.Local;
 
 import java.time.DayOfWeek;
 import java.time.LocalDate;
+import java.time.Period;
+import java.time.temporal.ChronoUnit;
 import java.util.Map;
 
 /**
@@ -39,6 +41,7 @@ public class Carrier {
             return 0;
 
     }
+
     public Integer getAvailableSeatsForClass(TravelClass classType) {
         if (mapOfTravelClassToSeatsInfo.containsKey(classType))
             return mapOfTravelClassToSeatsInfo.get(classType).getNoOfSeatsAvlb();
@@ -94,9 +97,9 @@ public class Carrier {
     public float getMarkedUpFirstClassPrices(float firstClassBasePrice, LocalDate departDate) {
         final int preBookingWindowInDays=10;
         LocalDate todaysDate = LocalDate.now();
-        int differenceInDates = departDate.compareTo(todaysDate);
-        System.out.println(differenceInDates);
-        float markUpRate = 1.0f+(float)(preBookingWindowInDays - differenceInDates)/preBookingWindowInDays;
+        Long differenceInDays = ChronoUnit.DAYS.between(todaysDate, departDate);
+        System.out.println(differenceInDays);
+        float markUpRate = 1.0f+(float)(preBookingWindowInDays - differenceInDays)/preBookingWindowInDays;
         System.out.println("BusinessClass markupRate" + markUpRate);
         return firstClassBasePrice * markUpRate;
     }

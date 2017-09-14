@@ -33,12 +33,23 @@ public class FlightDataLoader {
 
         LocalDate todaysDate = LocalDate.now();
         LocalDate nextDate = todaysDate.plusDays(1);
+        LocalDate nextWeek = todaysDate.plusDays(7);
+        LocalDate tenDaysAway = todaysDate.plusDays(10);
+        LocalDate nextMonth = todaysDate.plusDays(40);
+
+
         listOfFlights.add(new Flight("FL101","Source1","Dest1",todaysDate));
         listOfFlights.add(new Flight("FL102","Source1","Dest1",nextDate));
-        listOfFlights.add(new Flight("FL203","Source2","Dest2",todaysDate));
+        listOfFlights.add(new Flight("FL203","Source2","Dest2",nextWeek));
         listOfFlights.add(new Flight("FL204","Source2","Dest2",nextDate));
-        listOfFlights.add(new Flight("FL305","Source3","Dest3",todaysDate));
+        listOfFlights.add(new Flight("FL305","Source3","Dest3",tenDaysAway));
         listOfFlights.add(new Flight("FL306","Source3","Dest3",nextDate));
+        listOfFlights.add(new Flight("FL407","Source4","Dest4",nextMonth));
+        listOfFlights.add(new Flight("FL408","Source4","Dest4",todaysDate));
+        listOfFlights.add(new Flight("FL509","Source5","Dest5",nextWeek));
+        listOfFlights.add(new Flight("FL510","Source5","Dest5",nextMonth));
+
+
 
     }
 

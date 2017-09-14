@@ -14,7 +14,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.function.Predicate;
-import java.util.stream.Collector;
 import java.util.stream.Collectors;
 
 
@@ -64,7 +63,8 @@ public class FlightServiceHandler {
     }
 
     public  Predicate<Flight> doesFlightRouteMatch(SearchCriteria filterCriteria) {
-        return flight -> flight.isFlightBetweenSrcAndDestination(filterCriteria.getSource(),filterCriteria.getDestination());
+        return flight -> (flight.isFlightBetweenSrcAndDestination(filterCriteria.getSource(),
+                filterCriteria.getDestination()));
     }
 
     public  Predicate<Flight> doesDepartureDateMatch(SearchCriteria filterCriteria) {
@@ -76,10 +76,14 @@ public class FlightServiceHandler {
     public  Predicate<Flight> doesFlightHaveSeatsInTravelClass(SearchCriteria filterCriteria) {
 
         return flight -> (null==filterCriteria.getTravelClass() ||
-                flight.isTravelClassAvailbleinFlight(filterCriteria.getTravelClass()) &&
+                flight.isTravelClassAvailableInFlight(filterCriteria.getTravelClass()) &&
                 flight.getNoOfSeatsForTravelClass(filterCriteria.getTravelClass()) >= filterCriteria.getNoOfPassengers());
     }
 
+    public  Predicate<Flight> isFlightBookingOpenForFirstClass(SearchCriteria filterCriteria) {
+        return flight -> (null==filterCriteria.getTravelClass() || TravelClass.FIRST != filterCriteria.getTravelClass() ||
+                flight.isFirstClassBookingWindowWithin10Days());
+    }
 
     public List<String> getAllSourceLocations() {
         List <String> listofSrcLocations =  listOfAllFlights.stream()
@@ -112,6 +116,7 @@ public class FlightServiceHandler {
                 .filter(doesFlightRouteMatch(searchFld))
                 .filter(doesDepartureDateMatch(searchFld))
                 .filter(doesFlightHaveSeatsInTravelClass(searchFld))
+                .filter(isFlightBookingOpenForFirstClass(searchFld))
                 .collect(Collectors.toList());
 
         return listOfFlightsbySrcNDestByAvlb;

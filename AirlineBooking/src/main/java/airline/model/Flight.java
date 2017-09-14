@@ -1,12 +1,11 @@
 package airline.model;
 
-import org.apache.tomcat.jni.Local;
 import org.springframework.format.annotation.DateTimeFormat;
-import org.springframework.format.annotation.NumberFormat;
 
 import java.text.DecimalFormat;
 import java.time.LocalDate;
-import java.time.format.DecimalStyle;
+import java.time.Period;
+import java.time.temporal.ChronoUnit;
 
 /**
  * Created by Gayathri on 30/08/17.
@@ -75,7 +74,8 @@ public class Flight {
     }
 
     public Boolean isFlightBetweenSrcAndDestination(String src, String destination) {
-        return (getSource().equalsIgnoreCase(src) && getDestination().equalsIgnoreCase(destination));
+        return ((null == src || getSource().equalsIgnoreCase(src) )
+                && (null == destination || getDestination().equalsIgnoreCase(destination)));
     }
 
     public boolean isCarrierTypeEquals(CarrierType carrierType) {
@@ -92,7 +92,7 @@ public class Flight {
         this.carrierDetails = carrierModel;
     }
 
-    public boolean isTravelClassAvailbleinFlight(TravelClass classOfTravel) {
+    public boolean isTravelClassAvailableInFlight(TravelClass classOfTravel) {
         return this.carrierDetails.doesCarrierHaveClass(classOfTravel);
     }
 
@@ -106,10 +106,21 @@ public class Flight {
     public float getBasePriceForATravelClass(TravelClass travelClass) {
         DecimalFormat decimalFormat = new DecimalFormat();
         decimalFormat.setMaximumFractionDigits(2);
-        float basePrice  = carrierDetails.getBasePriceForTraveClass(travelClass,getDepartureDate());
+        float basePrice  = carrierDetails.getBasePriceForTraveClass(travelClass,this.getDepartureDate());
         return basePrice;
 
     }
 
+    public boolean isFirstClassBookingWindowWithin10Days() {
 
+        LocalDate startDate = LocalDate.now();
+
+        Long intervalPeriodInDays = ChronoUnit.DAYS.between(startDate, this.getDepartureDate());
+
+        if (isTravelClassAvailableInFlight(TravelClass.FIRST) && (intervalPeriodInDays <= 10)) {
+            return true;
+        } else {
+            return false;
+        }
+    }
 }
