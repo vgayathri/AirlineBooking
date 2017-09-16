@@ -34,8 +34,8 @@ public class Carrier {
         return mapOfTravelClassToSeatsInfo;
     }
 
-    public Integer getAllocatedSeatsForClass(TravelClass classType) {
-        if (mapOfTravelClassToSeatsInfo.containsKey(classType))
+    public Integer getTotalAllocatedSeatsForClass(TravelClass classType) {
+        if (doesCarrierHaveClass(classType))
             return mapOfTravelClassToSeatsInfo.get(classType).getTotalNoOfSeats();
         else
             return 0;
@@ -43,68 +43,12 @@ public class Carrier {
     }
 
     public Integer getAvailableSeatsForClass(TravelClass classType) {
-        if (mapOfTravelClassToSeatsInfo.containsKey(classType))
+        if (doesCarrierHaveClass(classType))
             return mapOfTravelClassToSeatsInfo.get(classType).getNoOfSeatsAvlb();
         else
             return 0;
 
     }
-
-
-    public Float getBasePriceForTraveClass(TravelClass classType, LocalDate departureDate) {
-        if (!mapOfTravelClassToSeatsInfo.containsKey(classType))
-            return 0.0f;
-        float basePriceForClass = mapOfTravelClassToSeatsInfo.get(classType).getBasePricePerSeat();
-        float markedUpPrice=0.0f;
-        switch(classType) {
-            case ECONOMY:
-                markedUpPrice = getMarkedUpEconomyClassPrices(basePriceForClass);
-                break;
-            case BUSINESS:
-                markedUpPrice = getMarkedUpBusinessClassPrices(basePriceForClass,departureDate);
-                break;
-            case FIRST:
-                markedUpPrice = getMarkedUpFirstClassPrices(basePriceForClass,departureDate);
-                break;
-            default:
-                markedUpPrice = basePriceForClass;
-                break;
-        }
-        return markedUpPrice;
-    }
-
-    /* add a premium on economyClassPrices across all carriers*/
-    public float getMarkedUpEconomyClassPrices(float economyBasePrice) {
-        float occupancyRate = mapOfTravelClassToSeatsInfo.get(TravelClass.ECONOMY).getPercentageOfSeatsOccuped();
-        System.out.println("Occupancy rate " + occupancyRate);
-        if (occupancyRate <= 40.0f)
-            return economyBasePrice;
-        else if (occupancyRate > 40.0f && occupancyRate <= 90.0f)
-            return economyBasePrice * 1.3f;
-        else
-            return economyBasePrice * 1.6f;
-    }
-
-    public float getMarkedUpBusinessClassPrices(float businessBasePrice, LocalDate dateOfDepart) {
-        DayOfWeek dayOfDepart = dateOfDepart.getDayOfWeek();
-        if (dayOfDepart == DayOfWeek.MONDAY || dayOfDepart==DayOfWeek.FRIDAY || dayOfDepart == DayOfWeek.SUNDAY) {
-            return businessBasePrice * 1.40f;
-        } else {
-            return businessBasePrice;
-        }
-    }
-
-    public float getMarkedUpFirstClassPrices(float firstClassBasePrice, LocalDate departDate) {
-        final int preBookingWindowInDays=10;
-        LocalDate todaysDate = LocalDate.now();
-        Long differenceInDays = ChronoUnit.DAYS.between(todaysDate, departDate);
-        System.out.println(differenceInDays);
-        float markUpRate = 1.0f+(float)(preBookingWindowInDays - differenceInDays)/preBookingWindowInDays;
-        System.out.println("BusinessClass markupRate" + markUpRate);
-        return firstClassBasePrice * markUpRate;
-    }
-
-
 
     public CarrierType getCarrierType() {
         return carrierType;
@@ -127,6 +71,20 @@ public class Carrier {
             return true;
         else
             return false;
+    }
+
+    public float getBasePriceForASeatInClass(TravelClass travelClass) {
+        if (doesCarrierHaveClass(travelClass))
+            return mapOfTravelClassToSeatsInfo.get(travelClass).getBasePricePerSeat();
+        else
+            return 0.0f;
+    }
+
+    public float getOccupancyRate(TravelClass travelClass) {
+        if (doesCarrierHaveClass(travelClass))
+            return mapOfTravelClassToSeatsInfo.get(travelClass).getPercentageOfSeatsOccuped();
+        else
+            return 0.0f;
     }
 
 

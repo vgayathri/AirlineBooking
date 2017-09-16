@@ -3,10 +3,7 @@ package airline.model; /**
  *
  */
 
-import airline.model.Flight;
-import airline.model.SearchCriteria;
 import airline.services.FlightServiceHandler;
-import airline.repositories.FlightDataLoader;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
@@ -114,7 +111,7 @@ public class TestFlights {
     @Test
     public void testFlightHasSeats() {
         TravelClass travelClass = TravelClass.ECONOMY;
-        Assert.assertTrue(testFlight.getNoOfSeatsForTravelClass(travelClass)!=0);
+        Assert.assertTrue(testFlight.getTotalNoOfSeatsInTravelClass(travelClass)!=0);
     }
 
     @Test
@@ -210,16 +207,21 @@ public class TestFlights {
 
     }
     @Test
-    public void testIfSearchReturnsBasePriceFor10PassengersNClass() {
+    public void testIfSearchReturnsPriceForNPassengersNClass() {
         testSearchCriteria.setSource("Source1");
         testSearchCriteria.setDestination("Dest1");
         testSearchCriteria.setNoOfPassengers(8);
         testSearchCriteria.setTravelClass(TravelClass.FIRST);
         List<Flight> listAllMatchingFlights = testServiceHandler.
                 searchForFlights(testSearchCriteria);
-        //List <Float> listOfPrices = testServiceHandler.calculateBasePriceForSeatsForFlightList(listAllMatchingFlights,testSearchCriteria);
-        //listOfPrices.stream()
-          //      .forEach(System.out::println);
+        //Map <String, Float> mapOfPricesToFlightIds = testServiceHandler.calculateBasePriceForSeatsForFlightList(listAllMatchingFlights,testSearchCriteria);
+        //Float result = mapOfPricesToFlightIds.entrySet().stream()
+               // .map(mapObj->mapObj.getValue())
+               // .reduce((a,b)->(a+b));
+
+
+
+
+        }
     }
-}
 

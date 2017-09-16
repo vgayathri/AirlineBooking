@@ -106,20 +106,20 @@ public class CarrierTest {
     @Test
     public void testAirBus321HasBasePriceForEconomySeat() {
         Carrier testCarrier = getTestCarrier(CarrierType.AIRBUS321);
-        float basePriceForEconomy = testCarrier.getBasePriceForTraveClass(TravelClass.ECONOMY,date1);
+        float basePriceForEconomy = testCarrier.getBasePriceForASeatInClass(TravelClass.ECONOMY);
          Assert.assertEquals(5000.0f,basePriceForEconomy,0.0);
     }
     @Test
     public void testAirBus321HasBasePriceForBusinessSeat() {
         Carrier testCarrier = getTestCarrier(CarrierType.AIRBUS321);
-        float basePriceForBusiness = testCarrier.getBasePriceForTraveClass(TravelClass.BUSINESS,date2);
+        float basePriceForBusiness = testCarrier.getBasePriceForASeatInClass(TravelClass.BUSINESS);
         Assert.assertEquals(10000.0f,basePriceForBusiness,0.0);
     }
     @Test
     public void testAirBus321BasePriceForBusinessSeatMoreThanForExconomySeat() {
         Carrier testCarrier = getTestCarrier(CarrierType.AIRBUS321);
-        float basePriceForBusiness = testCarrier.getBasePriceForTraveClass(TravelClass.BUSINESS,date1);
-        float basePriceForEconomy = testCarrier.getBasePriceForTraveClass(TravelClass.ECONOMY,date1);
+        float basePriceForBusiness = testCarrier.getBasePriceForASeatInClass(TravelClass.BUSINESS);
+        float basePriceForEconomy = testCarrier.getBasePriceForASeatInClass(TravelClass.ECONOMY);
         Assert.assertTrue(basePriceForBusiness>basePriceForEconomy);
     }
 
@@ -127,54 +127,54 @@ public class CarrierTest {
     public void testAirBus321DoesNotHaveBasePriceForFirstSeat()
     {
         Carrier testCarrier = getTestCarrier(CarrierType.AIRBUS321);
-        float basePriceForFirst = testCarrier.getBasePriceForTraveClass(TravelClass.FIRST, date1);
+        float basePriceForFirst = testCarrier.getBasePriceForASeatInClass(TravelClass.FIRST);
         Assert.assertEquals(0,basePriceForFirst,0.0);
     }
     @Test
     public void testAirBus19HasBasePriceForEconomySeat() {
         Carrier testCarrier = getTestCarrier(CarrierType.AIRBUS319V2);
-        float basePriceForEconomy = testCarrier.getBasePriceForTraveClass(TravelClass.ECONOMY,date2);
+        float basePriceForEconomy = testCarrier.getBasePriceForASeatInClass(TravelClass.ECONOMY);
         Assert.assertEquals(4000.0f,basePriceForEconomy,0.0);
     }
     @Test
     public void testAirBus319HaNosBasePriceForBusinessSeat() {
         Carrier testCarrier = getTestCarrier(CarrierType.AIRBUS319V2);
-        float basePriceForBusiness = testCarrier.getBasePriceForTraveClass(TravelClass.BUSINESS,date1);
+        float basePriceForBusiness = testCarrier.getBasePriceForASeatInClass(TravelClass.BUSINESS);
         Assert.assertEquals(0.0f,basePriceForBusiness,0.0);
     }
     @Test
     public void testAirBus319DoesNotHaveBasePriceForFirstSeat()
     {
         Carrier testCarrier = getTestCarrier(CarrierType.AIRBUS319V2);
-        float basePriceForFirst = testCarrier.getBasePriceForTraveClass(TravelClass.FIRST,today);
+        float basePriceForFirst = testCarrier.getBasePriceForASeatInClass(TravelClass.FIRST);
         Assert.assertEquals(0,basePriceForFirst,0.0);
     }
     @Test
     public void testBoeingHasBasePriceForEconomySeat() {
         Carrier testCarrier = getTestCarrier(CarrierType.BOEING777);
-        float basePriceForEconomy = testCarrier.getBasePriceForTraveClass(TravelClass.ECONOMY,date1);
+        float basePriceForEconomy = testCarrier.getBasePriceForASeatInClass(TravelClass.ECONOMY);
         Assert.assertEquals(6000.0f,basePriceForEconomy,0.0);
     }
     @Test
-    public void testBoeingHaNosBasePriceForBusinessSeat() {
+    public void testBoeingHasBasePriceForBusinessSeat() {
         Carrier testCarrier = getTestCarrier(CarrierType.BOEING777);
-        float basePriceForBusiness = testCarrier.getBasePriceForTraveClass(TravelClass.BUSINESS,today);
+        float basePriceForBusiness = testCarrier.getBasePriceForASeatInClass(TravelClass.BUSINESS);
         Assert.assertEquals(13000.0f,basePriceForBusiness,0.0);
     }
     @Test
     public void testBoeingHasBasePriceForFirstSeat()
     {
         Carrier testCarrier = getTestCarrier(CarrierType.BOEING777);
-        float basePriceForFirst = testCarrier.getBasePriceForTraveClass(TravelClass.FIRST,date2);
-        Assert.assertEquals(20000.0f,basePriceForFirst,0.0);
+        float basePriceForFirst = testCarrier.getBasePriceForASeatInClass(TravelClass.FIRST);
+        Assert.assertTrue(basePriceForFirst >=20000.0f);
     }
     @Test
     public void testBoeingHasBasePricesForHigherClassMoreThanLowerClass()
     {
         Carrier testCarrier = getTestCarrier(CarrierType.BOEING777);
-        float basePriceForFirst = testCarrier.getBasePriceForTraveClass(TravelClass.FIRST,date1);
-        float basePriceForEconomy = testCarrier.getBasePriceForTraveClass(TravelClass.ECONOMY,date2);
-        float basePriceForBusiness = testCarrier.getBasePriceForTraveClass(TravelClass.BUSINESS,today);
+        float basePriceForFirst = testCarrier.getBasePriceForASeatInClass(TravelClass.FIRST);
+        float basePriceForEconomy = testCarrier.getBasePriceForASeatInClass(TravelClass.ECONOMY);
+        float basePriceForBusiness = testCarrier.getBasePriceForASeatInClass(TravelClass.BUSINESS);
 
         Assert.assertTrue(basePriceForFirst > basePriceForBusiness && basePriceForBusiness > basePriceForEconomy);
     }

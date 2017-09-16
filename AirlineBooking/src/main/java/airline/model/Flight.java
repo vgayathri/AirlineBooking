@@ -2,9 +2,7 @@ package airline.model;
 
 import org.springframework.format.annotation.DateTimeFormat;
 
-import java.text.DecimalFormat;
 import java.time.LocalDate;
-import java.time.Period;
 import java.time.temporal.ChronoUnit;
 
 /**
@@ -96,19 +94,19 @@ public class Flight {
         return this.carrierDetails.doesCarrierHaveClass(classOfTravel);
     }
 
-    public int getNoOfSeatsForTravelClass(TravelClass travelClass) {
-        return carrierDetails.getAllocatedSeatsForClass(travelClass);
+    public int getTotalNoOfSeatsInTravelClass(TravelClass travelClass) {
+        return carrierDetails.getTotalAllocatedSeatsForClass(travelClass);
     }
     public int getNoOfAvailableSeatsForTravelClass(TravelClass travelClass) {
         return carrierDetails.getAvailableSeatsForClass(travelClass);
     }
 
-    public float getBasePriceForATravelClass(TravelClass travelClass) {
-        DecimalFormat decimalFormat = new DecimalFormat();
-        decimalFormat.setMaximumFractionDigits(2);
-        float basePrice  = carrierDetails.getBasePriceForTraveClass(travelClass,this.getDepartureDate());
-        return basePrice;
+    public float getOccupancyRate(TravelClass classOfTravel) {
+        return carrierDetails.getOccupancyRate(classOfTravel);
+    }
 
+    public float getBasePriceForASeatInClass(TravelClass travelClass) {
+            return carrierDetails.getBasePriceForASeatInClass(travelClass);
     }
 
     public boolean isFirstClassBookingWindowWithin10Days() {

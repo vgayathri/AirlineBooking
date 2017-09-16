@@ -24,10 +24,6 @@ public class SeatsInfo {
         return totalNoOfSeats;
     }
 
-    public void setTotalNoOfSeats(Integer totalNoOfSeats) {
-        this.totalNoOfSeats = totalNoOfSeats;
-    }
-
     public Integer getNoOfSeatsBooked() {
         return noOfSeatsBooked;
     }
@@ -40,9 +36,6 @@ public class SeatsInfo {
         return basePricePerSeat;
     }
 
-    public void setBasePricePerSeat(Float basePricePerSeat) {
-        this.basePricePerSeat = basePricePerSeat;
-    }
     public Integer getNoOfSeatsAvlb() {
         return totalNoOfSeats - noOfSeatsBooked;
     }
@@ -52,7 +45,7 @@ public class SeatsInfo {
     }
 
     public float getPercentageOfSeatsOccuped() {
-        return (noOfSeatsBooked*100/totalNoOfSeats);
+        return (float)(noOfSeatsBooked*100/totalNoOfSeats);
     }
 
 }

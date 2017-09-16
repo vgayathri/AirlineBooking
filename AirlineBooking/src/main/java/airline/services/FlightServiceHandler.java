@@ -6,6 +6,8 @@ import airline.model.SearchCriteria;
 import airline.model.TravelClass;
 import airline.repositories.CarrierDataLoader;
 import airline.repositories.FlightDataLoader;
+import airline.services.TravelClassPricingHandler;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -25,6 +27,8 @@ public class FlightServiceHandler {
 
     private List<Flight> listOfAllFlights = new ArrayList<Flight>();
     private List<Carrier> listOfAllCarriers = new ArrayList<Carrier>();
+    private TravelClassPricingHandler pricingHandler = new TravelClassPricingHandler();
+
     @Autowired
     private CarrierDataLoader carrierListLoader;
     @Autowired
@@ -77,7 +81,7 @@ public class FlightServiceHandler {
 
         return flight -> (null==filterCriteria.getTravelClass() ||
                 flight.isTravelClassAvailableInFlight(filterCriteria.getTravelClass()) &&
-                flight.getNoOfSeatsForTravelClass(filterCriteria.getTravelClass()) >= filterCriteria.getNoOfPassengers());
+                flight.getTotalNoOfSeatsInTravelClass(filterCriteria.getTravelClass()) >= filterCriteria.getNoOfPassengers());
     }
 
     public  Predicate<Flight> isFlightBookingOpenForFirstClass(SearchCriteria filterCriteria) {
@@ -122,15 +126,12 @@ public class FlightServiceHandler {
         return listOfFlightsbySrcNDestByAvlb;
 
     }
-
     public Map<String, Float> calculateBasePriceForSeatsForFlightList(List<Flight> filteredFlights, SearchCriteria searchCriteria) {
-        int noOfPassengers = searchCriteria.getNoOfPassengers();
-        TravelClass classOfTravel = searchCriteria.getTravelClass();
         Map <String,Float> mapOfFlightToPrice =  new HashMap<String, Float>();
         for (Flight flight:filteredFlights
-             ) {
-            Float costOfSeats = flight.getBasePriceForATravelClass(classOfTravel) * noOfPassengers;
-            mapOfFlightToPrice.putIfAbsent(flight.getFlightID(),Float.parseFloat(String.format("%.2f",costOfSeats)));
+                ) {
+            Float costOfSeats = pricingHandler.getPriceForSeatsInAFlight(flight,searchCriteria);
+            mapOfFlightToPrice.putIfAbsent(flight.getFlightID(),Float.parseFloat(String.format("%.02f",costOfSeats)));
         }
         return mapOfFlightToPrice;
     }
