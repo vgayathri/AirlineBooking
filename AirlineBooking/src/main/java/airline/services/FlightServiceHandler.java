@@ -6,7 +6,6 @@ import airline.model.SearchCriteria;
 import airline.model.TravelClass;
 import airline.repositories.CarrierDataLoader;
 import airline.repositories.FlightDataLoader;
-import airline.services.TravelClassPricingHandler;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -130,7 +129,7 @@ public class FlightServiceHandler {
         Map <String,Float> mapOfFlightToPrice =  new HashMap<String, Float>();
         for (Flight flight:filteredFlights
                 ) {
-            Float costOfSeats = pricingHandler.getPriceForSeatsInAFlight(flight,searchCriteria);
+            Float costOfSeats = pricingHandler.calculatePrice(flight,searchCriteria);
             mapOfFlightToPrice.putIfAbsent(flight.getFlightID(),Float.parseFloat(String.format("%.02f",costOfSeats)));
         }
         return mapOfFlightToPrice;
