@@ -5,7 +5,5 @@ package airline.model;
  */
 public interface PricingStrategy {
 
-    default Float getPriceForASeat(Flight flightObj, SearchCriteria criteria) {
-        return null;
-    }
+    float calculatePrice(Flight flightObj, SearchCriteria criteria);
 }

@@ -40,10 +40,6 @@ public class SeatsInfo {
         return totalNoOfSeats - noOfSeatsBooked;
     }
 
-    public Float calculatePriceofSeats(Integer noOfSeats) {
-        return (basePricePerSeat * noOfSeats);
-    }
-
     public float getPercentageOfSeatsOccuped() {
         return (float)(noOfSeatsBooked*100/totalNoOfSeats);
     }

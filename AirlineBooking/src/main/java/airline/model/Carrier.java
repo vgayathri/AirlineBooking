@@ -65,6 +65,13 @@ public class Carrier {
     public void setMapOfSeatsPerClass(Map<TravelClass, SeatsInfo> mapOfSeatsPerClass) {
         this.mapOfTravelClassToSeatsInfo = mapOfSeatsPerClass;
     }
+    public void setSeatInfoForTravelClass(TravelClass travelClass, SeatsInfo newSeatInfo){
+        if (doesCarrierHaveClass(travelClass)) {
+            this.mapOfTravelClassToSeatsInfo.replace(travelClass, newSeatInfo);
+        }
+        return;
+    }
+
 
     public boolean isCarrierTypeEquals(CarrierType carrierType) {
         if (getCarrierType().equals(carrierType))

@@ -67,8 +67,6 @@ public class CarrierTest {
     @Test
     public void testNotValidCarrierType() {
         testCarrier = getTestCarrier(CarrierType.BOEING777);
-        if (testCarrier != null)
-            System.out.print("Did not get an object");
         boolean validCarrierType = testCarrier.isCarrierTypeEquals(CarrierType.AIRBUS321);
         Assert.assertEquals(false, validCarrierType);
     }
@@ -182,10 +180,10 @@ public class CarrierTest {
     @Test
     public void testSeatsReturnsAllocatedSeats()
     {
+
         int noOfAllocatedSeats = testSeatInfo.getTotalNoOfSeats();
         Assert.assertTrue(noOfAllocatedSeats > 0);
     }
-
 
     @Test
     public void testSeatsReturnsBookedSeats()
@@ -203,13 +201,14 @@ public class CarrierTest {
         int noOfAvlbSeats = testSeatInfo.getNoOfSeatsAvlb();
         Assert.assertEquals(noOfAllocatedSeats-noOfSeatsBooked, noOfAvlbSeats);
     }
+
     @Test
-    public void testAmountForMoreThanOneSeat()
+    public void testOccupancyRate()
     {
-        float basePriceOfSeat = testSeatInfo.getBasePricePerSeat();
-        int noOfSeats = 10;
-        float calculatedPrice = testSeatInfo.calculatePriceofSeats(10);
-        Assert.assertTrue(basePriceOfSeat*10==calculatedPrice);
+        int noOfAllocatedSeats = testSeatInfo.getTotalNoOfSeats();
+        int noOfSeatsBooked = testSeatInfo.getNoOfSeatsBooked();
+        float occupancyRate = testSeatInfo.getPercentageOfSeatsOccuped();
+        Assert.assertEquals((noOfSeatsBooked *100)/noOfAllocatedSeats, occupancyRate,0.0f);
     }
 
 }

@@ -33,18 +33,18 @@ public class CarrierDataLoader {
     public void createCarrierList() {
 
         /*Boeing 777 has all three classes of travel*/
-        final Map<TravelClass, SeatsInfo> travelClassMapBoeing = new HashMap<TravelClass, SeatsInfo>();
+        Map<TravelClass, SeatsInfo> travelClassMapBoeing = new HashMap<TravelClass, SeatsInfo>();
         travelClassMapBoeing.put(TravelClass.FIRST, new SeatsInfo(8,20000f));
         travelClassMapBoeing.put(TravelClass.BUSINESS, new SeatsInfo(35,13000f));
         travelClassMapBoeing.put(TravelClass.ECONOMY,new SeatsInfo (195,100,6000f));
 
         /*Airbus 321 does not support first class*/
-        final Map<TravelClass, SeatsInfo> travelClassMap321 = new HashMap<TravelClass, SeatsInfo>();
+        Map<TravelClass, SeatsInfo> travelClassMap321 = new HashMap<TravelClass, SeatsInfo>();
         travelClassMap321.put(TravelClass.BUSINESS, new SeatsInfo(20,10000f));
         travelClassMap321.put(TravelClass.ECONOMY,new SeatsInfo(152, 20,5000f));
 
         /*Airbus 319 supports only economy class*/
-        final Map<TravelClass, SeatsInfo> travelClassMap319v2 = new HashMap<TravelClass, SeatsInfo>();
+         Map<TravelClass, SeatsInfo> travelClassMap319v2 = new HashMap<TravelClass, SeatsInfo>();
         travelClassMap319v2.put(TravelClass.ECONOMY, new SeatsInfo(144,140, 4000f));
 
         carrierList.add(new Carrier(CarrierType.BOEING777,travelClassMapBoeing));

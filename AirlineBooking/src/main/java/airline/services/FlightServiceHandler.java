@@ -1,9 +1,6 @@
 package airline.services;
 
-import airline.model.Carrier;
-import airline.model.Flight;
-import airline.model.SearchCriteria;
-import airline.model.TravelClass;
+import airline.model.*;
 import airline.repositories.CarrierDataLoader;
 import airline.repositories.FlightDataLoader;
 
@@ -26,7 +23,8 @@ public class FlightServiceHandler {
 
     private List<Flight> listOfAllFlights = new ArrayList<Flight>();
     private List<Carrier> listOfAllCarriers = new ArrayList<Carrier>();
-    private TravelClassPricingHandler pricingHandler = new TravelClassPricingHandler();
+    private HashMap<TravelClass,PricingStrategy> pricingHandlerMap = new HashMap<>();
+
 
     @Autowired
     private CarrierDataLoader carrierListLoader;
@@ -38,6 +36,9 @@ public class FlightServiceHandler {
         carrierListLoader =  new CarrierDataLoader();
         flightListLoader =  new FlightDataLoader();
         populateFlightnCarrierLists();
+        pricingHandlerMap.put(TravelClass.FIRST,new FirstClassPricingHandler());
+        pricingHandlerMap.put(TravelClass.BUSINESS,new BusinessClassPricingHandler());
+        pricingHandlerMap.put(TravelClass.ECONOMY,new EconomyClassPricingHandler());
     }
 
     /**
@@ -127,9 +128,9 @@ public class FlightServiceHandler {
     }
     public Map<String, Float> calculateBasePriceForSeatsForFlightList(List<Flight> filteredFlights, SearchCriteria searchCriteria) {
         Map <String,Float> mapOfFlightToPrice =  new HashMap<String, Float>();
-        for (Flight flight:filteredFlights
-                ) {
-            Float costOfSeats = pricingHandler.calculatePrice(flight,searchCriteria);
+        TravelClass classSearched = searchCriteria.getTravelClass();
+        for (Flight flight:filteredFlights) {
+            Float costOfSeats = pricingHandlerMap.get(classSearched).calculatePrice(flight,searchCriteria);
             mapOfFlightToPrice.putIfAbsent(flight.getFlightID(),Float.parseFloat(String.format("%.02f",costOfSeats)));
         }
         return mapOfFlightToPrice;
